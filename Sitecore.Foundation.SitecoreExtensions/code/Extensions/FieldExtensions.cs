@@ -410,27 +410,6 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return fieldValue != DateTime.MinValue && !string.IsNullOrEmpty(fieldValue.ToString(CultureInfo.InvariantCulture));
 		}
 
-		/// <summary>Inserts the no follow status.</summary>
-		/// <param name="anchorUrl">The anchor URL.</param>
-		/// <param name="qsKey">The qs key.</param>
-		/// <returns>The rel="nofollow" attribute or empty string</returns>
-		public static string InsertNoFollowStatus(string anchorUrl, string qsKey)
-		{
-			var nofollowAttribute = string.Empty;
-			var attrExists = ((!string.IsNullOrEmpty(anchorUrl)) && (!string.IsNullOrEmpty(qsKey)));
-			if (!attrExists)
-			{
-				return nofollowAttribute;
-			}
-
-			var hasNoFollow = anchorUrl.ToLower().Trim().IndexOf(qsKey.ToLower().Trim(), StringComparison.Ordinal) > -1;
-			if (hasNoFollow)
-			{
-				nofollowAttribute = qsKey.ToLower().Trim();
-			}
-			return nofollowAttribute;
-		}
-
 		/// <summary>
 		/// Common re-usable GetRitchTextContent() extension method - returns HtmlString or empty string
 		/// </summary>

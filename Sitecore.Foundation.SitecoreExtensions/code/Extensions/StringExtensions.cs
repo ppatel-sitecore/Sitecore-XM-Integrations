@@ -55,5 +55,26 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			var pattern = new Regex(regexPattern);
 			return (setLowerCase) ? pattern.Replace(value.ToLower().Trim(), "") : pattern.Replace(value.Trim(), "");
 		}
+
+		/// <summary>Inserts the no follow status.</summary>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="qsKey">The qs key.</param>
+		/// <returns>The rel="nofollow" attribute or empty string</returns>
+		public static string InsertNoFollowStatus(this string anchorUrl, string qsKey)
+		{
+			var nofollowAttribute = string.Empty;
+			var attrExists = ((!string.IsNullOrEmpty(anchorUrl)) && (!string.IsNullOrEmpty(qsKey)));
+			if (!attrExists)
+			{
+				return nofollowAttribute;
+			}
+
+			var hasNoFollow = anchorUrl.ToLower().Trim().IndexOf(qsKey.ToLower().Trim(), StringComparison.Ordinal) > -1;
+			if (hasNoFollow)
+			{
+				nofollowAttribute = qsKey.ToLower().Trim();
+			}
+			return nofollowAttribute;
+		}
 	}
 }
