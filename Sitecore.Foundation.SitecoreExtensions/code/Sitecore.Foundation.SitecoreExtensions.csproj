@@ -613,4 +613,11 @@
     <PackageReference Include="YUICompressor.NET" Version="3.1.0" />
   </ItemGroup>
 
+	<Target Name="ExportDependencyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High" />
+		<Copy SourceFiles="bin\Debug\netcoreapp3.1\$(ProjectName).dll;bin\Debug\netcoreapp3.1\$(ProjectName).deps.json"
+		      DestinationFolder="..\..\Sitecore.Foundation.DynamicSitemapAPI\code\Dependencies" />
+		<Message Text="Copied build files" Importance="High" />
+	</Target>
+
 </Project>
