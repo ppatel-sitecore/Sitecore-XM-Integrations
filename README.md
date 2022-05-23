@@ -1,8 +1,25 @@
 # Sitecore-XM-Integrations
 ## Sitecore-XM-Integrations for Composible DXP Solutions
 
+### Sitecore.Foundation.DynamicSitemapAPI Project (Now included in the main Solution)
+#### For Implemntation use of this project into your Solution complete the following:
+1. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\Sitecore.Foundation.DynamicSitemapAPI.dll
+    - .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\Sitecore.Foundation.DynamicSitemapAPI.dll.config
+2. Copy the following AppConfig folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\AppConfig => to => [ProjectFolder]\AppConfig
+
+#### Summary Documention (Pending)
 
 ### Sitecore.Foundation.Extensions Project (Now included in the main Solution)
+#### For Implemntation use of this project into your Solution complete the following:
+1. Copy the following DLL files into your project solution (i.e. can be used even without a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.dll
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.deps.json
+2. Copy the following AppConfig folder as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\AppConfig => to => [ProjectFolder]\AppConfig
+
+#### Summary Documention 
 1. This includes build-in extension method functionality for the client's wanting to integrate with a Traditional Sitecore XM/XP instance implementation 
     - These extension methods can be accessed via the following files under the src\Middleware\src\SitecoreExtensions\code folder:
         - \Extensions\FieldExtensions.cs => Extension methods for Sitecore Field Item object from the Sitecore XM/XP instance        

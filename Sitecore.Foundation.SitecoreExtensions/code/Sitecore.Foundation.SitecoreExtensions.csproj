@@ -617,7 +617,17 @@
 		<Message Text="Executing CopyDLLs task" Importance="High" />
 		<Copy SourceFiles="bin\Debug\netcoreapp3.1\$(ProjectName).dll;bin\Debug\netcoreapp3.1\$(ProjectName).deps.json"
 		      DestinationFolder="..\..\Sitecore.Foundation.DynamicSitemapAPI\code\Dependencies" />
-		<Message Text="Copied build files" Importance="High" />
+		<Message Text="Executing CopyDLLs task" Importance="High" />
+	</Target>
+	<Target Name="DevBuildingNugetPackageSolution" AfterTargets="Build">
+		<Message Text="Dev: Building Nuget Package Solution Implementation task" Importance="High" />
+		<Copy SourceFiles="bin\Debug\netcoreapp3.1\$(ProjectName).dll;bin\Debug\netcoreapp3.1\$(ProjectName).deps.json"
+		      DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
+		<Copy SourceFiles="App_Config\Include\Foundation\Foundation.SitecoreExtensions.config"
+		      DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Foundation\" />
+		<Copy SourceFiles="App_Config\Include\Foundation\Global.Sitecore.Config.Patches\patch.Sitecore.config"
+		      DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Foundation\Global.Sitecore.Config.Patches" />
+		<Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
 	</Target>
 
 </Project>

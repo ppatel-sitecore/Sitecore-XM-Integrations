@@ -335,4 +335,12 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
+  <Target Name="DevBuildingNugetPackageSolution" AfterTargets="Build">
+	<Message Text="Dev: Building Nuget Package Solution Implementation task" Importance="High" />
+	<Copy SourceFiles="bin\$(ProjectName).dll;bin\$(ProjectName).dll.config"
+		  DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
+	<Copy SourceFiles="App_Config\Include\Foundation\Sitecore.Foundation.DynamicSitemapAPI.config"
+		  DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Foundation\" />
+	<Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
+  </Target>
 </Project>
