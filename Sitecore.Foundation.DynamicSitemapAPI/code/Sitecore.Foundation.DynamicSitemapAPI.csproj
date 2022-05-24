@@ -122,7 +122,7 @@
     </Reference>
     <Reference Include="Sitecore.Foundation.SitecoreExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\Sitecore.Foundation.SitecoreExtensions.dll</HintPath>
+      <HintPath>..\..\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.Framework.Conditions, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Sitecore.Framework.Conditions.4.0.0\lib\netstandard2.0\Sitecore.Framework.Conditions.dll</HintPath>
@@ -334,13 +334,21 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-  </Target> -->
+  </Target> -->  
+  <Target Name="BeforeBuild" BeforeTargets="Build">
+	<Message Text="Building Dependency Projects task" Importance="High" />
+	<PropertyGroup>  
+	  <SolutionDir>$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</SolutionDir>
+	</PropertyGroup>
+	<Exec Command='"$(MSBuildBinPath)\MSBuild.exe" "..\..\Sitecore.Foundation.SitecoreExtensions\code\Sitecore.Foundation.SitecoreExtensions.csproj"' />
+	<Message Text="Building Dependency Projects task" Importance="High" />
+  </Target>
   <Target Name="DevBuildingNugetPackageSolution" AfterTargets="Build">
 	<Message Text="Dev: Building Nuget Package Solution Implementation task" Importance="High" />
 	<Copy SourceFiles="bin\$(ProjectName).dll;bin\$(ProjectName).dll.config"
-		  DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
+		DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
 	<Copy SourceFiles="App_Config\Include\Foundation\Sitecore.Foundation.DynamicSitemapAPI.config"
-		  DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Foundation\" />
+		DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Foundation\" />
 	<Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
   </Target>
 </Project>
