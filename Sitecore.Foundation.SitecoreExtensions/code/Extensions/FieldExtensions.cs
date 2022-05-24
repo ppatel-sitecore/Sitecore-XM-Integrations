@@ -539,7 +539,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="anchorCss">The anchor CSS.</param>
 		/// <param name="anchorAttributes">The anchor attributes.</param>
 		/// <returns>The Hyperlink Html string or empty string</returns>
-		private static string HyperLinkFor(string anchorText, string anchorUrl, string anchorId, string anchorCss = "", string anchorAttributes = "")
+		public static string HyperLinkFor(string anchorText, string anchorUrl, string anchorId, string anchorCss = "", string anchorAttributes = "")
 		{
 			if (string.IsNullOrEmpty(anchorText) || string.IsNullOrEmpty(anchorUrl) || string.IsNullOrEmpty(anchorId))
 			{
