@@ -74,3 +74,15 @@
                 - StripHtml(this string html) => <returns>The content from a Html string object retrieved from the HtmlDocument object, as a string value</returns>
                 - IHtmlString RenderValue(this string value) => <returns>The clean Html content, as a Html string value</returns>
                 - RemoveSpecifiedChars(this string value, string regexPattern, bool setLowerCase = false) => <returns>The string value after removing an array of regex characters from the string, as a string value</returns>
+
+### Sitecore.Feature.Template.Solution Project (Now included in the main Solution)
+#### For Implemntation use of this project into your Solution complete the following:
+1. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+    - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll.config
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+2. Copy the following AppConfig folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\AppConfig => to => [ProjectFolder]\AppConfig
+
+#### Summary Documention (Pending)
