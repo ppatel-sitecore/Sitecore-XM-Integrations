@@ -5,7 +5,9 @@
 #### For Implemntation use of this project into your Solution complete the following:
 1. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\Sitecore.Foundation.DynamicSitemapAPI.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
     - .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\Sitecore.Foundation.DynamicSitemapAPI.dll.config
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
 2. Copy the following AppConfig folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\AppConfig => to => [ProjectFolder]\AppConfig
 
@@ -15,7 +17,9 @@
 #### For Implemntation use of this project into your Solution complete the following:
 1. Copy the following DLL files into your project solution (i.e. can be used even without a Traditional Sitecore XM/XP instance):
     - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
     - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.deps.json
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
 2. Copy the following AppConfig folder as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\AppConfig => to => [ProjectFolder]\AppConfig
 
