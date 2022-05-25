@@ -376,7 +376,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
 		/// <returns>The contextItem's link field Url value or null</returns>
-		public static string GetLinkFieldUrlValue(Item contextItem, string fieldKey)
+		public static string GetLinkFieldUrlValue(this Item contextItem, string fieldKey)
 		{
 			return FieldExtensions.GetLinkFieldUrl(contextItem, fieldKey);
 		}
@@ -385,7 +385,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldId">The field key.</param>
 		/// <returns>The contextItem's link field Url value or null</returns>
-		public static string GetLinkFieldUrlValue(Item contextItem, ID fieldId)
+		public static string GetLinkFieldUrlValue(this Item contextItem, ID fieldId)
 		{
 			return FieldExtensions.GetLinkFieldUrl(contextItem, fieldId);
 		}
