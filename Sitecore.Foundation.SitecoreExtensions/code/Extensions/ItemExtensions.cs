@@ -394,7 +394,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
 		/// <returns>The list of targeted Items from this contextItem's Multi-list Field</returns>
-		public static IEnumerable<Item> GetMultiListValueItems(this Item contextItem, string fieldKey)
+		public static List<Item> GetMultiListValueItems(this Item contextItem, string fieldKey)
 		{
 			return FieldExtensions.IsValidFieldValueByKeyHasValue(contextItem, fieldKey) 
 				? FieldExtensions.GetMultiListField(contextItem, fieldKey).GetItems().ToList()
@@ -405,7 +405,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldId">The field key.</param>
 		/// <returns>The list of targeted Items from this contextItem's Multi-list Field</returns>
-		public static IEnumerable<Item> GetMultiListValueItems(this Item contextItem, ID fieldId)
+		public static List<Item> GetMultiListValueItems(this Item contextItem, ID fieldId)
 		{
 			return FieldExtensions.IsValidFieldValueByKeyHasValue(contextItem, fieldId)
 				? FieldExtensions.GetMultiListField(contextItem, fieldId).GetItems().ToList() 
