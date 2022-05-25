@@ -1,0 +1,45 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var contextItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var marqueeItem = featuresController.GetMarqueeContentItem(contextItem.ID, false);
+    var marqueeBgColorCss = (marqueeItem.OverrideBackgroundWithColor) ? marqueeItem.BackgroundColorCSS : string.Empty;
+}
+
+<!-- Dynamic Large Marquee Component Partial View -->
+@if (contextItem.TemplateName.Contains("Marquee"))
+{
+    if (marqueeItem != null && (!string.IsNullOrEmpty(marqueeItem.Description)))
+    {
+        <div class="section-marquee marquee-large @marqueeBgColorCss">
+            <div id="marquee-item-@contextItem.ID.ToString()">
+                @if (!marqueeItem.OverrideBackgroundWithColor)
+                {
+                    <div class="img-wrapper">
+                        <div class="home-gradient"></div>
+                        <img src="@marqueeItem.BackgroundImageUrl" class="hero-background-image d-none d-lg-block" alt="@marqueeItem.BackgroundImageAltText" />
+                        <img src="@marqueeItem.BackgroundImageMobileUrl" class="hero-background-image-mobile d-block d-lg-none" alt="@marqueeItem.BackgroundImageAltText" />
+                    </div>
+                }
+
+                <div class="content-container">
+                    <h2 class="text-white">@marqueeItem.Headline</h2>
+                    <h5 class="text-white">@marqueeItem.SubHeadline</h5>
+
+                    @marqueeItem.Description.RenderHtmlString()
+                </div>
+            </div>
+        </div>
+    }
+}
+<!-- Dynamic Large Marquee Component Partial View -->

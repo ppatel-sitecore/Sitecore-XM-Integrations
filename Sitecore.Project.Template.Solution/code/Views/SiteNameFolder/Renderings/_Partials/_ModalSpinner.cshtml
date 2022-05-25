@@ -1,0 +1,35 @@
+﻿@using Sitecore.Resources.Media;
+@using Sitecore.Project.Template.Solution
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+
+@{
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+    var mediaItemUrl = string.Empty;
+    var mediaItemAltText = string.Empty;
+    if (appSettings.BrandedModalSpinnerSVG)
+    {
+        var mediaItem = Sitecore.Context.Database.GetItem(siteController.ConfigSettings.GetBrandedModalSpinnerPath());
+        mediaItemUrl = (mediaItem != null && mediaItem.Paths.IsMediaItem)
+            ? MediaManager.GetMediaUrl(mediaItem) : string.Empty;
+        mediaItemAltText = (mediaItem != null && mediaItem.Paths.IsMediaItem)
+            ? mediaItem.GetFieldValue("Alt") : string.Empty;
+    }
+}
+
+<!-- ModalSpinner Partial View -->
+<div class="modal fade" tabindex="-1" role="dialog" id="spinnerModal">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        @if (string.IsNullOrEmpty(mediaItemUrl.Trim()))
+        {
+            @*FOR BOOTSTRAP SPINNER WITH ACCENT BLUE*@
+            <span class="fa fa-spinner fa-spin fa-3x w-100 secondary-accent-blue"></span>
+        }
+        else
+        {
+            @*FOR SITE BRANDED BLOCKS SPINNER FROM THE MEDIA LIBRARY*@
+            <img alt="@mediaItemAltText" src="@mediaItemUrl" />
+        }
+    </div>
+</div>
+<!-- ModalSpinner Partial View -->

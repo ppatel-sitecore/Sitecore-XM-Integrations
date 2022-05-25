@@ -8,7 +8,7 @@
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
     - .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\Sitecore.Foundation.DynamicSitemapAPI.dll.config
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
-2. Copy the following AppConfig folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+2. Copy the 'AppConfig' as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Foundation.DynamicSitemapAPI\AppConfig => to => [ProjectFolder]\AppConfig
 
 #### Summary Documention (Pending)
@@ -20,7 +20,7 @@
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
     - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.deps.json
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
-2. Copy the following AppConfig folder as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+2. Copy the 'AppConfig' as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\AppConfig => to => [ProjectFolder]\AppConfig
 
 #### Summary Documention 
@@ -77,12 +77,63 @@
 
 ### Sitecore.Feature.Template.Solution Project (Now included in the main Solution)
 #### For Implemntation use of this project into your Solution complete the following:
-1. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+1. Copy the following DLL files into your project solution (i.e. can be used even without a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.deps.json
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+2. Copy the 'AppConfig' as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\AppConfig => to => [ProjectFolder]\AppConfig
+3. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
     - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll.config
         - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
-2. Copy the following AppConfig folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+4. Copy the 'AppConfig' as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\AppConfig => to => [ProjectFolder]\AppConfig
+
+#### Summary Documention (Pending)
+
+
+### Sitecore.Project.Template.Solution Project (Now included in the main Solution)
+#### For Implemntation use of this project into your Solution complete the following:
+1. Copy the following DLL files into your project solution (i.e. can be used even without a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+    - .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\Sitecore.Foundation.SitecoreExtensions.deps.json
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+2. Copy the 'AppConfig' as is, into your XM/XP project solution(i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Foundation.SitecoreExtensions\AppConfig => to => [ProjectFolder]\AppConfig
+3. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+    - .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\Sitecore.Feature.GlobalComponentLibrary.dll.config
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+4. Copy the 'AppConfig' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Feature.GlobalComponentLibrary\AppConfig => to => [ProjectFolder]\AppConfig
+5. Copy the following DLL files into your project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Sitecore.Project.Template.Solution.dll
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+    - .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Sitecore.Project.Template.Solution.dll.config
+        - Copy to [ProjectFolder]\Dependencies folder (must create this folder) and reference in the project from here
+6. Copy the 'AppConfig' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\AppConfig => to => [ProjectFolder]\AppConfig
+        - Open the 'SiteName.Project.WebsiteDEV.config'; 'SiteName.Project.WebsiteQA.config.disabled'; 
+        'SiteName.Project.WebsiteUAT.config.disabled' & 'SiteName.Project.WebsitePROD.config.disabled' files:
+            - Replace all referenced instances of '{SiteName}' with actual Sitecore Site Item Name, in the Sitecore Content Editor
+            - Replace all referenced instances of '{SiteUrlLowerCase}' with actual site Url in lowercase without the www prefix
+            - NOTE THE CONFIG FILES, NAMED WITH DISABLED ARE FOR THE NEXT ENVIRONMENTS UP
+            - Replace the 'SiteName.' part of all these config files, with the actual name of the Site Item Name, in the Sitecore Content Editor
+        - Open the 'SiteName.Project.WebsiteSettings.config' file 
+            - Replace all referenced instances of '{SiteName}' with actual Sitecore Site Item Name, in the Sitecore Content Editor
+7. Copy the 'Content\SampleContent' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Content => to => [ProjectFolder]\Content
+        - Rename the '[ProjectFolder]\Content\SampleContent' folder with the actual name of the Site Item Name, in the Sitecore Content Editor
+        - Rename all the references in the views for '[ProjectFolder]\Content\SampleContent' folder
+8. Copy the 'Scripts' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Scripts => to => [ProjectFolder]\Scripts
+9. Copy the 'Views\SampleContent' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Views => to => [ProjectFolder]\Views
+        - Rename the '[ProjectFolder]\Content\SiteNameFolder' folder with the actual name of the Site Item Name, in the Sitecore Content Editor
 
 #### Summary Documention (Pending)

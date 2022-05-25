@@ -1,0 +1,78 @@
+@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var index = 1;
+    var currentPageItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var carouselItems = currentPageItem.GetMultiListValueItems("Carousel Gallery Items");
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+}
+
+<!-- Dynamic CarouselMarquee Partial View -->
+<section id="caroursel-marquee-items" class="container-fluid section-container p-0">
+    @if (carouselItems != null && carouselItems.Length > 0)
+    {
+        <div class="container-fluid section-container p-0">
+            <div id="heroCarouselWithControls" class="carousel slide" data-interval="10000" data-ride="carousel" data-pause="hover" data-item-count="@carouselItems.Length">
+                <div class="carousel-inner">
+                    @foreach (var contextItem in carouselItems)
+                    {
+                        var marqueeItem = featuresController.GetMarqueeContentItem(contextItem.ID, true);
+                        var activeClass = (index == 1) ? "active" : string.Empty;
+
+                        if (marqueeItem != null)
+                        {
+                            <div class="carousel-item @activeClass">
+                                <div class="img-wrapper">
+                                    <div class="home-gradient"></div>
+                                    <img src="@marqueeItem.BackgroundImageUrl" class="hero-background-image d-none d-lg-block" alt="@marqueeItem.BackgroundImageAltText" />
+                                    <img src="@marqueeItem.BackgroundImageMobileUrl" class="hero-background-image-mobile d-block d-lg-none" alt="@marqueeItem.BackgroundImageAltText" />
+                                </div>
+                                <div class="d-block">
+                                    <div class="marquee-caption-content">
+                                        <div class="text-justify">
+                                            <h5 class="marquee-hero-header">@marqueeItem.Headline</h5>
+                                        </div>
+                                        <div>
+                                            @if (!string.IsNullOrEmpty(marqueeItem.Description.GetCleanRitchTextContent()))
+                                            {
+                                                @marqueeItem.Description.RenderHtmlString()
+                                            }
+                                            else
+                                            {
+                                                @currentPageItem.GetFieldValue("Carousel Global Content").RenderHtmlString()
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        index++;
+                    }
+                </div>
+                @if (carouselItems.Length > 1)
+                {
+                    <a class="carousel-control-prev" href="#heroCarouselWithControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#heroCarouselWithControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+</section>
+<!-- Dynamic CarouselMarquee Partial View -->

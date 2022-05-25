@@ -1,0 +1,43 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@model Item
+
+@{
+    var robots = string.Empty;
+    var currentPageItem = Model;
+    if (!currentPageItem.GetCheckboxCheckedValue("Can Index"))
+    {
+        robots += "noindex";
+    }
+    if (currentPageItem.GetCheckboxCheckedValue("Can Index") && !currentPageItem.GetCheckboxCheckedValue("Can Follow"))
+    {
+        robots = (!string.IsNullOrEmpty(robots)) ? robots += ", nofollow" : robots += "nofollow";
+    }
+
+    var keywords = string.Empty;
+    var description = currentPageItem.GetFieldValue("Meta Description").GetCleanRitchTextContent();
+    var pageMetaTagsList = currentPageItem.GetMultiListValueItems("Meta Keywords");
+    if (pageMetaTagsList != null && pageMetaTagsList.Length > 0)
+    {
+        foreach (var metaTagItem in pageMetaTagsList)
+        {
+	        var metaTagItemKey = metaTagItem.GetFieldValue("Key");
+	        var metaTagItemPhrase = metaTagItem.GetFieldValue("Phrase");
+            if (!string.IsNullOrWhiteSpace(metaTagItemKey) && !string.IsNullOrWhiteSpace(metaTagItemPhrase))
+            {
+                keywords += metaTagItemPhrase;
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
+}
+
+@if (!string.IsNullOrEmpty(robots))
+{
+    <meta name="robots" content="@robots" />
+}
+<meta name="keywords" content="@keywords" />
+<meta name="description" content="@description" />

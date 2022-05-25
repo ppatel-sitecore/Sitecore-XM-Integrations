@@ -1,0 +1,106 @@
+@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@model Item
+
+@{
+    var siteItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var linkText = string.Empty;
+    var linkUrl = string.Empty;
+    var targetHostUrl = HelpersExt.GetTargetHostNameUrl();
+    var leftFooterLinks = siteItem.GetMultiListValueItems("Left Links List");
+    var rightFooterLinks = siteItem.GetMultiListValueItems("Right Links List");
+    var imageLinkFor = FieldExtensions.ImageLinkFor(siteItem, "Footer Logo", "",
+        targetHostUrl, "footer-logo");
+
+    var disclosureContent = siteItem.GetFieldValue("Copyright and Disclosure Text")
+        .RenderHtmlString(@"{copyright-year}");
+}
+
+<footer data-swiftype-index="false">
+    <div class="container-fluid section-container">
+        <div class="row">
+            <div class="col-lg-7 order-4 order-sm-4 order-md-4 order-lg-1 mt-5 mt-lg-0 general-info">
+                <div class="footer-address">
+                    <div id="footer-logo" class="footer-logo mb-2">
+                        @if (!string.IsNullOrEmpty(imageLinkFor))
+                        {
+                            @imageLinkFor.RenderHtmlString()
+                        }
+                    </div>
+                    <div class="mobile-general-links">
+                        <ul class="pl-0 my-4">
+                            @foreach (var navItem in rightFooterLinks)
+                            {
+                                linkText = navItem.GetFieldValue("Link Text");
+                                linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                {
+                                    <li>
+                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
+                                            "secondary-accent-blue-light", anchorAttributes)
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="footer-disclosure">
+                        @if (!string.IsNullOrEmpty(disclosureContent.ToHtmlString().GetCleanRitchTextContent()))
+                        {
+                            @disclosureContent
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-2 order-2 order-sm-2 order-md-2 order-lg-3 quick-links ml-auto">
+                <b1>
+                    @siteItem.GetFieldValue("Left Links Title").RenderHtmlString()
+                </b1>
+                <ul id="ul-right-nav-links" class="ul-footer-links pl-0 my-4">
+                    @foreach (var navItem in leftFooterLinks)
+                    {
+                        linkText = navItem.GetFieldValue("Link Text");
+                        linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                        var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                        if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                        {
+                            <li class="d-flex flex-row mb-2">
+                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
+                                    "", anchorAttributes)
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="col-lg-2 order-3 order-sm-3 order-md-3 order-lg-4 general-links">
+                <b1>
+                    @siteItem.GetFieldValue("Right Links Title").RenderHtmlString()
+                </b1>
+                <ul id="ul-right-utility-nav-links" class="ul-footer-links pl-0 my-4">
+                    @foreach (var navItem in rightFooterLinks)
+                    {
+                        linkText = navItem.GetFieldValue("Link Text");
+                        linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                        var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                        if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                        {
+                            <li class="d-flex flex-row mb-2">
+                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
+                                    "secondary-accent-blue-light", anchorAttributes)
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

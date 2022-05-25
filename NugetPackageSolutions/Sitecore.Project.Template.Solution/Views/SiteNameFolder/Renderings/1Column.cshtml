@@ -1,0 +1,72 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@model Item
+
+@{
+    var currentPageItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var bodyContent = currentPageItem.GetFieldValue("Body Content");
+    var enableCarouselGallery = currentPageItem.TemplateID == homeItem.TemplateID
+        && currentPageItem.GetCheckboxCheckedValue("Enable Carousel Gallery");
+    var enableComponentContent = currentPageItem.TemplateID != homeItem.TemplateID
+        && currentPageItem.GetCheckboxCheckedValue("Enable Component Content");
+    var carouselItems = currentPageItem.GetMultiListValueItems("Carousel Gallery Items");
+}
+
+<!--Dynamic Main Page content container -->
+@if (currentPageItem != null)
+{
+    if (currentPageItem.ID == homeItem.ID && enableCarouselGallery)
+    {
+        <!-- Dynamic CarouselMarquee Partial View -->
+        <section id="page-caroursel-@currentPageItem.ID.ToString()" class="container-fluid section-container p-0">
+            @if (carouselItems != null && carouselItems.Length > 0)
+            {
+                @Html.Partial(siteController.ConfigSettings.GetCarouselMarqueeViewPath(), currentPageItem)
+            }
+        </section>
+        <!-- Dynamic CarouselMarquee Partial View -->
+    }
+    else
+    {
+        if (enableComponentContent)
+        {
+            @Html.Partial(siteController.ConfigSettings.GetPageComponentsPartialViewPath(), currentPageItem)
+        }
+        <div class="container-fluid section-container p-0">
+            @if (!string.IsNullOrEmpty(bodyContent.GetCleanRitchTextContent()))
+            {
+                @currentPageItem.GetFieldValue("Body Content").RenderHtmlString()
+            }
+            <!--Dynamic Sitecore Forms container -->
+            <section class="get-in-touch">
+                <section class="section_container sitecore-forms-section">
+                    <div class="page mw-100 page-form-three" data-question="three">
+                        <div class="container-fluid px-0">
+                            @Html.Sitecore().Placeholder("GetInTouchForm")
+                        </div>
+                    </div>
+                </section>
+            </section>
+            <!--Dynamic Sitecore Forms container -->
+        </div>
+    }
+    <!--Dynamic ISI Disclosure content partial view container -->
+    <section id="isi-main" class="isi isi-main">
+        @siteItem.GetFieldValue("ISI Disclosure Content").RenderHtmlString()
+    </section>
+    <section id="isi-inline" class="isi isi-inline">
+        @siteItem.GetFieldValue("ISI Disclosure Content").RenderHtmlString()
+    </section>
+    <section id="references-block-content" class="references-block-content">
+        @currentPageItem.GetFieldValue("References Block Content").RenderHtmlString()
+    </section>
+    <!--Dynamic ISI Disclosure content partial view container -->
+}
+<!--Dynamic Main Page content container -->

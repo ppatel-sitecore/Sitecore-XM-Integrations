@@ -1,0 +1,44 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentPageItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var pageComponents = currentPageItem.GetMultiListValueItems("Component Content Items");
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var globalItem = appSettings.GlobalItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+}
+
+<!-- Dynamic Page Components Partial View -->
+@if (pageComponents != null && pageComponents.Length > 0)
+{
+    foreach (var contextItem in pageComponents)
+    {
+	    if (contextItem != null)
+	    {
+		    var contextItemId = contextItem.ID.ToString().RemoveSpecifiedChars(@"[{}]", true);
+            <section id="components-@contextItemId" class="container-fluid section-container p-0">
+                @if (contextItem.TemplateName.Equals("Large Marquee", StringComparison.OrdinalIgnoreCase))
+                {
+                    @Html.Partial(siteController.ConfigSettings.GetLargeMarqueeViewPath(), contextItem)
+                }
+                else if (contextItem.TemplateName.Equals("Medium Marquee", StringComparison.OrdinalIgnoreCase))
+                {
+                    @Html.Partial(siteController.ConfigSettings.GetMediumMarqueeViewPath(), contextItem)
+                }
+                else if (contextItem.TemplateName.Equals("Small Marquee", StringComparison.OrdinalIgnoreCase))
+                {
+                    @Html.Partial(siteController.ConfigSettings.GetSmallMarqueeViewPath(), contextItem)
+                }
+            </section>
+        }
+    }
+}
+<!-- Dynamic Page Components Partial View -->

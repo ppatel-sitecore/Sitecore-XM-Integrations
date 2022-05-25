@@ -1,0 +1,94 @@
+﻿@using System;
+@using Sitecore.Data.Items;
+@using System.Globalization;
+@using Sitecore.Resources.Media;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@model Item
+
+@{
+    var siteItem = Model;
+    var statusBannerItemId = siteItem.ID;
+    var hostUrl = HttpContext.Current.Request.Url.Host;
+    var absoluteUrl = HttpContext.Current.Request.Url.AbsoluteUri;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var showOnAllPages = siteItem.GetCheckboxCheckedValue("Show on All Pages");
+    var targetedPages = siteItem.GetMultiListValueItems("Show on Selected Pages");
+    var homeItemPath = appSettings.HomeItem.Paths.Path;
+
+    bool isForTargetedPages = false;
+    foreach (var currentSelPage in targetedPages)
+    {
+        isForTargetedPages = (currentSelPage != null
+            && absoluteUrl.Equals(string.Format(@"{0}/{1}", hostUrl,
+                currentSelPage.Paths.Path.Replace(homeItemPath, "")), StringComparison.OrdinalIgnoreCase));
+
+        if (!isForTargetedPages)
+        {
+            continue;
+        }
+        break;
+    }
+    var isForScheduledDisplay = (FieldExtensions.IsValidFieldValueByKeyHasValue(siteItem, "Display Start DateTime")
+        && FieldExtensions.IsValidFieldValueByKeyHasValue(siteItem, "Display End DateTime"));
+    var divSiteAlertCloseClass = siteItem.GetCheckboxCheckedValue("Enable Close")
+            ? string.Format(@"{0} d-none", "close-site-alert float-right") : "close-site-alert float-right";
+    var selectedColorItem = FieldExtensions.GetSelectedItemFromDroplistField(siteItem, "Banner Color");
+    var divSiteAlertBgColor = selectedColorItem.GetFieldValue("Phrase").Trim();
+    var bannerMessage = FieldExtensions.GetFieldValueByKey(siteItem, "Banner Message").GetCleanRitchTextContent();
+    var mediaItem = FieldExtensions.GetImageField(siteItem, "Banner Icon");
+    var mediaItemUrl = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? MediaManager.GetMediaUrl(mediaItem.MediaItem) : string.Empty;
+    var mediaItemAltText = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? mediaItem.Alt : string.Empty;
+}
+
+<!-- Notification Banner Partial View -->
+<div class="notification-alert site-alert" data-swiftype-index="false">
+    @{
+        DateTimeFormatInfo mfi = new DateTimeFormatInfo();
+        var currentDateLabel = (string.Format(@"{0} {1}, {2}", mfi.GetMonthName(DateTime.Today.Month), DateTime.Today.Day, DateTime.Today.Year)).Trim();
+
+        if (showOnAllPages || isForTargetedPages)
+        {
+            if ((!isForScheduledDisplay) || (isForScheduledDisplay && FieldExtensions.IsItemForScheduledDisplay(siteItem.ID)))
+            {
+                <div id="site-alert--@statusBannerItemId" class="site-alert--banner @divSiteAlertBgColor">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 col-xl-1 mt-2 mb-0 mb-xl-2 date-vertical-divider">
+                                <span class="b3">
+                                    @currentDateLabel
+                                    <span class="ml-4"></span>
+                                </span>
+                                <a id="close-site-alert--@statusBannerItemId" href="#" class="@divSiteAlertCloseClass d-block d-xl-none" data-banner-id="site-alert--@statusBannerItemId">
+                                    <i class="fal fa-times fa-2x mt-1"></i>
+                                </a>
+                            </div>
+                            <div class="col-12 col-xl-11 mb-2 mt-0 mt-xl-2">
+                                <a id="close-site-alert--@statusBannerItemId" href="#" class="@divSiteAlertCloseClass d-none d-xl-block" data-banner-id="site-alert--@statusBannerItemId">
+                                    <i class="fal fa-times fa-2x mt-1"></i>
+                                </a>
+                                <div class="float-left pl-xl-2">
+                                    @if (!string.IsNullOrEmpty(mediaItemUrl) && !string.IsNullOrEmpty(mediaItemAltText))
+                                    {
+                                        <span class="alert-logo mr-3">
+	                                        @Html.Raw(FieldExtensions.ImageFor(siteItem, "Banner Icon", ""))
+                                        </span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(bannerMessage))
+                                    {
+                                        <span class="alert-sub-headline b3">
+                                            @Html.Raw(FieldExtensions.GetFieldValueByKey(siteItem, "Banner Message"))
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
+<!-- Notification Banner Partial View -->

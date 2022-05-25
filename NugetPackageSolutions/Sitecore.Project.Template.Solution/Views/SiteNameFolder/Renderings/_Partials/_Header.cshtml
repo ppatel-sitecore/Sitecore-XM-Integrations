@@ -1,0 +1,658 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Project.Template.Solution.MVC.Extensions
+@model Item
+
+@{
+
+
+    var index = 0;
+    var siteItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var linkText = string.Empty;
+    var linkUrl = string.Empty;
+    var targetHostUrl = HelpersExt.GetTargetHostNameUrl();
+    var menuLinksPrimary = siteItem.GetMultiListValueItems("Menu Links Primary");
+    var menuLinksSecondary = siteItem.GetMultiListValueItems("Menu Links Secondary");
+    var imageLinkFor = FieldExtensions.ImageLinkFor(siteItem, "Desktop Menu Logo", "",
+        targetHostUrl, "header-logo");
+
+    var navCategoryTemplateId = siteController.ConfigSettings.GetNavCategoryTemplateId();
+    var pageTypeTemplateId = siteController.ConfigSettings.GetPageTypeTemplateId();
+}
+
+<header data-swiftype-index="false" class="scroll-up">
+    <div class="header-rows-banner">
+        <div class="row-fluid">
+            @Html.Partial(siteController.ConfigSettings.GetNotificationBannerPartialViewPath(), siteItem)
+        </div>
+    </div>
+    <div class="mobile-utility-nav-top">
+        <ul class="mobile-utility ul-links ul-header-utility-nav-links">
+            @{ index = 0;}
+            @foreach (var navItem in menuLinksPrimary)
+            {
+                if (navItem != null)
+                {
+	                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                    if (navItem.Template.ID == navCategoryTemplateId)
+                    {
+                        var pageCatItemId = ("mobile-" + navMenuItemId);
+                        var catName = navItem.GetFieldValue("Category Name");
+                        var catDesc = navItem.GetFieldValue("Category Description").RenderHtmlString();
+                        <li class="px-3 nav-item dropdown has-megamenu d-flex flex-row float-left mobile-utility-nav-modal-fullscreen">
+                            <a id="@pageCatItemId" href="javascript:toggleUtilityNavCaption('#ultilyNavModal');" aria-label="@catName">
+                                <span class="nav-label">@catName</span>  <i class="fas fa-caret-down px-1"></i>
+                            </a>
+                            <!-- Modal -->
+                            <div id="ultilyNavModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalUltilyLabel">
+                                <div class="modal-dialog modal-full" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" aria-label="Close" onclick="closeUilityModal('#ultilyNavModal');">
+                                                <i class="fas fa-1x fa-times-circle" aria-hidden="true"></i>
+                                            </button>
+                                            <h4 id="modalUltilyLabel" class="modal-title">@FieldExtensions.GetFieldValueByKey(navItem, "Category Name")</h4>
+                                        </div>
+                                        <div id="mobile-modal-content" class="modal-body p-4">
+                                            @catDesc
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            <div class="dropdown-menu dropdown-menu-right megamenu">
+                                <ul class="mega-menu-items indication-content">
+                                    @if (!string.IsNullOrEmpty(catDesc.ToHtmlString().GetCleanRitchTextContent()))
+                                    {
+                                        <li class="col-lg-12">
+                                            <h4 class="mb-3">@catName</h4>
+                                            @catDesc
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        linkText = navItem.GetFieldValue("Link Text");
+                        linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+
+                        if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                        {
+                            var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+                            var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) ? "secondary-accent-blue-light" : string.Empty;
+                            <li class="px-3 d-flex flex-row float-left">
+                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),navMenuItemId, lightClass, 
+	                                anchorAttributes).RenderHtmlString()
+                            </li>
+                        }
+                    }
+                }
+                index++;
+            }
+
+        </ul>
+    </div>
+    <div class="container-fluid section-container header-rows header-rows-1" style="background-image: url('@targetHostUrl/-/media/6AF375633934491CB95FFBE0E274312C.ashx'); background-size: cover; background-position: bottom right;">
+        <nav class="row">
+            <div class="col-lg-2 col-xl-3 d-none d-lg-block">
+                <!-- Logo -->
+                <div class="header-logo float-left navbar-brand">
+                    @if (!string.IsNullOrEmpty(imageLinkFor))
+                    {
+                        @imageLinkFor.RenderHtmlString()
+                    }
+                </div>
+                <!-- Logo -->
+            </div>
+            <div class="logo-badge"></div>
+            <div class="col-lg-10 col-xl-9 d-none d-lg-block all-links">
+                <ul class="desktop-utility ul-links ul-header-utility-nav-links">
+                    @{ index = 0;}
+                    @foreach (var navItem in menuLinksPrimary)
+                    {
+                        if (navItem != null)
+                        {
+	                        var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                            if (navItem.Template.ID == navCategoryTemplateId)
+                            {
+                                var pageCatItemId = ("desktop-" + navMenuItemId);
+                                var catName = navItem.GetFieldValue("Category Name");
+                                var catDesc = navItem.GetFieldValue("Category Description").RenderHtmlString();
+                                <li id="desktop-indication-dropdown-link" class="ml-3 nav-item dropdown has-megamenu d-flex flex-row float-left">
+                                    <a id="@pageCatItemId" href="javascript:toggleUtilityNavCaption('#@pageCatItemId');" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="nav-label">@catName</span> <span class="caret"></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right megamenu">
+                                        <button type="button" class="close-desktop-indication" data-dismiss="" aria-label="Close">
+                                            <i class="fal fa-times text-orange"></i>
+                                        </button>
+                                        <ul class="mega-menu-items indication-content">
+                                            @if (!string.IsNullOrEmpty(catDesc.ToHtmlString().GetCleanRitchTextContent()))
+                                            {
+                                                <li class="col-lg-12">
+                                                    <h4 class="mb-3">@catName</h4>
+                                                    @catDesc
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                linkText = navItem.GetFieldValue("Link Text");
+                                linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                {
+                                    var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) ? "secondary-accent-blue-light" : string.Empty;
+                                    <li class="ml-3 d-flex flex-row float-left">
+                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),navMenuItemId, lightClass,
+                                            anchorAttributes).RenderHtmlString()
+                                    </li>
+                                }
+                            }
+                        }
+                        index++;
+                    }
+                </ul>
+                <ul class="ul-links ul-header-main-links ul-tabs pl-0 pt-12">
+                    @{ index = 0;}
+                    @foreach (var navItem in menuLinksSecondary)
+                    {
+                        if (navItem != null)
+                        {
+	                        var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                            if (navItem.Template.ID == navCategoryTemplateId)
+                            {
+                                var subPageItems = navItem.GetMultiListValueItems("Navigation Links");
+	                            var fourLinksCss = (subPageItems.Length > 2) ? "four-links" : string.Empty;
+                                var catName = navItem.GetFieldValue("Category Name");
+                                <li class="nav-item dropdown has-megamenu d-flex flex-row float-left">
+                                    <a id="@navMenuItemId" href="javascript:toggleUtilityNavCaption('#@navMenuItemId');" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="nav-label">@catName</span> <span class="caret"></span>
+                                    </a>
+                                    <div class="dropdown-menu megamenu">
+                                        <ul class="mega-menu-items px-0 @fourLinksCss">
+                                            @foreach (var subPageItem in subPageItems)
+                                            {
+                                                linkText = subPageItem.GetFieldValue("Link Text");
+                                                linkUrl = subPageItem.GetLinkFieldUrlValue("Link Url");
+                                                var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1)))
+	                                                ? "secondary-accent-blue-light" : string.Empty;
+                                                if (subPageItem != null)
+                                                {
+	                                                var subMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                                    var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
+                                                    <li class="li-item">
+                                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),
+                                                            subMenuItemId, "", anchorAttr).RenderHtmlString()
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+	                            linkText = navItem.GetFieldValue("Link Text");
+	                            linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                {
+                                    var btnCSS = (navItem.Template.DisplayName == "CTA Link") ? "btn btn--solirisgmgpro-secondary-orange" : string.Empty;
+                                    var liCSS = (!string.IsNullOrEmpty(btnCSS)) ? "cta-li" : string.Empty;
+                                    <li class="d-flex flex-row float-left @liCSS">
+                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, btnCSS, 
+	                                        anchorAttributes).RenderHtmlString()
+                                    </li>
+                                }
+                            }
+                        }
+                        index++;
+                    }
+                </ul>
+            </div>
+            <!-- [Mobile Hamburger Menu New] -->
+            @if (!string.IsNullOrEmpty(imageLinkFor))
+            {
+                @FieldExtensions.ImageLinkFor(siteItem, "Mobile Menu Logo", 
+	                "", "/", "mobile-header-logo", 
+	                "navbar-brand d-lg-none").RenderHtmlString()
+            }
+            <button id="mobile-hamburger-menu" class="open-mobile-menu navbar-toggler d-lg-none p-0 my-3 ml-3 float-left" type="button" aria-controls="mobile-links-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+                <div class="animated-icon1 mr-3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div id="mobile-links-nav" class="d-lg-none">
+                <div class="mobile-menu-container">
+                    <div class="mobile-main-links">
+                        <div class="logo-close-icon d-flex flex-nowrap justify-content-between">
+                            <img alt="" height="40" width="76" src="-/media/A8BD1C6455C44DCC934326F53A385045.ashx" />
+                            <button id="mobile-hamburger-menu-close" class="open-mobile-menu " type="button" aria-controls="mobile-links-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+                                <i class=" fal fa-times text-white fa-2x" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <ul class="main-links">
+                            @foreach (var navItem in menuLinksSecondary)
+                            {
+                                if (navItem != null)
+                                {
+	                                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                    if (navItem.Template.ID == navCategoryTemplateId)
+                                    {
+                                        var subPageItems = navItem.GetMultiListValueItems("Navigation Links");
+	                                    <li class="dropdown-submenu mr-5 d-flex flex-row float-left">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <span class="nav-label">@FieldExtensions.GetFieldValueByKey(navItem, "Category Name")</span> <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @foreach (var subPageItem in subPageItems)
+                                                {
+	                                                linkText = subPageItem.GetFieldValue("Link Text");
+	                                                linkUrl = subPageItem.GetLinkFieldUrlValue("Link Url");
+                                                    if (subPageItem != null)
+                                                    {
+	                                                    var nsubMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                                        var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
+                                                        <li class="li-item">
+                                                            @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), nsubMenuItemId, "", 
+	                                                            anchorAttr).RenderHtmlString()
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+	                                    linkText = navItem.GetFieldValue("Link Text");
+	                                    linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                        var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                        if (navItem != null && navItem.Template.DisplayName != "CTA Link" && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                        {
+                                            <li class="d-flex flex-row float-left">
+                                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, 
+	                                                "", anchorAttributes).RenderHtmlString()
+                                            </li>
+                                        }
+                                    }
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="mobile-utility-nav-links">
+                        <ul class="utility-links">
+                            @{ index = 0;}
+                            @foreach (var navItem in menuLinksPrimary)
+                                    <li class="px-3 nav-item dropdown has-megamenu d-flex flex-row float-left mobile-utility-nav-modal-fullscreen">
+                                        <a id="@pageCatItemId" href="javascript:toggleUtilityNavCaption('#ultilyNavModal');" aria-label="@catName">
+                                            <span class="nav-label">@catName</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+	                                linkText = navItem.GetFieldValue("Link Text");
+	                                linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                    var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+                                    var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) 
+	                                    ? "secondary-accent-blue-light" : string.Empty;
+                                    if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                    {
+                                        <li class="ml-3 d-flex flex-row float-left">
+                                            @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, 
+	                                            lightClass, anchorAttributes).RenderHtmlString()
+                                        </li>
+                                    }
+                                }
+                                index++;
+                            }
+                        </ul>
+                    </div>
+                    <div class="mobile-sticky-cta">
+                        @foreach (var navItem in menuLinksSecondary)
+                        {
+                            if (navItem != null)
+                            {
+                                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                if (navItem.Template.ID == navCategoryTemplateId)
+                                {
+                                    var subPageItems = navItem.GetMultiListValueItems("Navigation Links");
+                                    var fourLinksCss = (subPageItems.Length > 2) ? "four-links" : string.Empty;
+                                    var catName = navItem.GetFieldValue("Category Name");
+
+
+#line default
+#line hidden
+
+#line 40 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = navMenuItemId;
+
+
+#line default
+#line hidden
+
+#line 41 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = navMenuItemId;
+
+
+#line default
+#line hidden
+
+#line 42 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = catName;
+
+
+#line default
+#line hidden
+
+#line 43 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = fourLinksCss;
+
+
+#line default
+#line hidden
+
+#line 44 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    foreach (var subPageItem in subPageItems)
+                                    {
+                                        linkText = subPageItem.GetFieldValue("Link Text");
+                                        linkUrl = subPageItem.GetLinkFieldUrlValue("Link Url");
+                                        var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1)))
+                                            ? "secondary-accent-blue-light" : string.Empty;
+                                        if (subPageItem != null)
+                                        {
+                                            var subMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                            var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
+
+
+#line default
+#line hidden
+
+#line 45 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                            __o = FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),
+                                                     subMenuItemId, "", anchorAttr).RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 46 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                        }
+                                    }
+
+#line default
+#line hidden
+
+#line 47 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                }
+                                else
+                                {
+                                    linkText = navItem.GetFieldValue("Link Text");
+                                    linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                    var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                    if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                    {
+                                        var btnCSS = (navItem.Template.DisplayName == "CTA Link") ? "btn btn--solirisgmgpro-secondary-orange" : string.Empty;
+                                        var liCSS = (!string.IsNullOrEmpty(btnCSS)) ? "cta-li" : string.Empty;
+
+
+#line default
+#line hidden
+
+#line 48 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                        __o = liCSS;
+
+
+#line default
+#line hidden
+
+#line 49 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                        __o = FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, btnCSS,
+                                                 anchorAttributes).RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 50 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                    }
+                                }
+                            }
+                            index++;
+                        }
+
+#line default
+#line hidden
+
+#line 51 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                        if (!string.IsNullOrEmpty(imageLinkFor))
+                        {
+
+
+#line default
+#line hidden
+
+#line 52 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                            __o = FieldExtensions.ImageLinkFor(siteItem, "Mobile Menu Logo",
+                                     "", "/", "mobile-header-logo",
+                                     "navbar-brand d-lg-none").RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 53 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                        }
+
+#line default
+#line hidden
+
+#line 54 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                        foreach (var navItem in menuLinksSecondary)
+                        {
+                            if (navItem != null)
+                            {
+                                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                if (navItem.Template.ID == navCategoryTemplateId)
+                                {
+                                    var subPageItems = navItem.GetMultiListValueItems("Navigation Links");
+
+
+#line default
+#line hidden
+
+#line 55 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = FieldExtensions.GetFieldValueByKey(navItem, "Category Name");
+
+
+#line default
+#line hidden
+
+#line 56 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    foreach (var subPageItem in subPageItems)
+                                    {
+                                        linkText = subPageItem.GetFieldValue("Link Text");
+                                        linkUrl = subPageItem.GetLinkFieldUrlValue("Link Url");
+                                        if (subPageItem != null)
+                                        {
+                                            var nsubMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                            var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
+
+
+#line default
+#line hidden
+
+#line 57 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                            __o = FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), nsubMenuItemId, "",
+                                                     anchorAttr).RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 58 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                        }
+                                    }
+
+#line default
+#line hidden
+
+#line 59 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                }
+                                else
+                                {
+                                    linkText = navItem.GetFieldValue("Link Text");
+                                    linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                    var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                                    if (navItem != null && navItem.Template.DisplayName != "CTA Link" && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                    {
+
+
+#line default
+#line hidden
+
+#line 60 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                        __o = FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId,
+                                                 "", anchorAttributes).RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 61 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                    }
+                                }
+                            }
+                        }
+
+#line default
+#line hidden
+
+#line 62 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                        index = 0;
+
+#line default
+#line hidden
+
+#line 63 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                        foreach (var navItem in menuLinksPrimary)
+                        {
+                            var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                            if (navItem.Template.ID == navCategoryTemplateId)
+                            {
+                                var pageCatItemId = ("mobile-" + navMenuItemId);
+                                var catName = navItem.GetFieldValue("Category Name");
+                                var catDesc = navItem.GetFieldValue("Category Description").RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 64 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                __o = pageCatItemId;
+
+
+#line default
+#line hidden
+
+#line 65 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                __o = catName;
+
+
+#line default
+#line hidden
+
+#line 66 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                __o = catName;
+
+
+#line default
+#line hidden
+
+#line 67 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                            }
+                            else
+                            {
+                                linkText = navItem.GetFieldValue("Link Text");
+                                linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                                var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+                                var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1)))
+                                    ? "secondary-accent-blue-light" : string.Empty;
+                                if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                                {
+
+
+#line default
+#line hidden
+
+#line 68 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                                    __o = FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId,
+                                             lightClass, anchorAttributes).RenderHtmlString();
+
+
+#line default
+#line hidden
+
+#line 69 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+
+                                }
+                            }
+                            index++;
+                        }
+
+#line default
+#line hidden
+
+#line 70 "C:\Azure\Sitecore-XM-Integrations\Sitecore.Project.Template.Solution\code\Views\SiteNameFolder\Renderings\_Partials\_Header.cshtml"
+                        foreach (var navItem in menuLinksSecondary)
+                        {
+                            linkText = navItem.GetFieldValue("Link Text");
+                            linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
+                            var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+
+                            if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                            {
+                                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+                                if (navItem.Template.DisplayName != "CTA Link")
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+	                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, 
+		                                "btn btn-primary btn-secondary-orange", anchorAttributes).RenderHtmlString()
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- [Mobile Hamburger Menu New] -->
+        </nav>
+    </div>
+</header>
