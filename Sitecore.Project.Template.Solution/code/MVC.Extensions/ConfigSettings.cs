@@ -68,8 +68,8 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 		public string GetCanonicalUrl(Item contextItem)
 		{
 			var currentPageItem = contextItem ?? Context.Item.Database.GetItem($@"{AppSettings.HomeItem.Paths.Path}/500");
-			var canonicalUrl = (FieldExtensions.IsValidFieldValueByKeyHasValue(currentPageItem, "Canonical Url"))
-				? FieldExtensions.GetFieldValueByKey(currentPageItem, "Canonical Url")
+			var canonicalUrl = !string.IsNullOrWhiteSpace(currentPageItem.GetFieldValue("Canonical Url"))
+				? currentPageItem.GetFieldValue("Canonical Url")
 				: $@"https://{Context.Site.TargetHostName}{Links.LinkManager.GetItemUrl(currentPageItem).ToLower().Trim()}";
 			return canonicalUrl;
 		}

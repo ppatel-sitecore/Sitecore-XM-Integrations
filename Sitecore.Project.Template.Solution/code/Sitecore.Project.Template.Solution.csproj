@@ -523,7 +523,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Web.config" />
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -586,28 +586,28 @@
     <Message Text="Building Dependency Projects task" Importance="High" />
   </Target>
   <Target Name="DevBuildingNugetPackageSolution" AfterTargets="Build">
-	<ItemGroup>
-		<SampleContentCSS Include="Content\SampleContent\CSS\*.*" />
-        <SampleContentFonts Include="Content\SampleContent\fonts\*.*" />		
-        <SitecoreIntegrations Include="Scripts\SitecoreIntegrations\**\*.*" />
-		<AppConfigsProjet Include="App_Config\Include\Project\SiteNameFolder\*.*" />
-		<ViewsLayouts Include="Views\SiteNameFolder\Layouts\*.*" />		
-		<ViewsRenderings Include="Views\SiteNameFolder\Renderings\*.*" />		
-		<ViewsRenderingsPartials Include="Views\SiteNameFolder\Renderings\_Partials\*.*" />		
-		<ViewsSiteComponentRenderings Include="Views\SiteNameFolder\SiteComponentRenderings\*.*" />
-		<ViewsSiteComponentMarqueeItems Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\*.*" />
+    <ItemGroup>
+      <SampleContentCSS Include="Content\SampleContent\CSS\*.*" />
+      <SampleContentFonts Include="Content\SampleContent\fonts\*.*" />
+      <SitecoreIntegrations Include="Scripts\SitecoreIntegrations\**\*.*" />
+      <AppConfigsProjet Include="App_Config\Include\Project\SiteNameFolder\*.*" />
+      <ViewsLayouts Include="Views\SiteNameFolder\Layouts\*.*" />
+      <ViewsRenderings Include="Views\SiteNameFolder\Renderings\*.*" />
+      <ViewsRenderingsPartials Include="Views\SiteNameFolder\Renderings\_Partials\*.*" />
+      <ViewsSiteComponentRenderings Include="Views\SiteNameFolder\SiteComponentRenderings\*.*" />
+      <ViewsSiteComponentMarqueeItems Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\*.*" />
     </ItemGroup>
     <Message Text="Dev: Building Nuget Package Solution Implementation task" Importance="High" />
     <Copy SourceFiles="bin\$(ProjectName).dll;bin\$(ProjectName).dll.config" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
     <Copy SourceFiles="@(AppConfigsProjet)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Project\SiteNameFolder" />
-	<Copy SourceFiles="@(SampleContentCSS)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\CSS" />
-	<Copy SourceFiles="@(SampleContentFonts)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\fonts" />
-	<Copy SourceFiles="@(SitecoreIntegrations)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Scripts\SitecoreIntegrations" />
-	<Copy SourceFiles="@(ViewsLayouts)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Layouts" />
-	<Copy SourceFiles="@(ViewsRenderings)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Renderings" />	
-	<Copy SourceFiles="@(ViewsRenderingsPartials)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Renderings\_Partials" />
-	<Copy SourceFiles="@(ViewsSiteComponentRenderings)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings" />	
-	<Copy SourceFiles="@(ViewsSiteComponentMarqueeItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems" />
+    <Copy SourceFiles="@(SampleContentCSS)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\CSS" />
+    <Copy SourceFiles="@(SampleContentFonts)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\fonts" />
+    <Copy SourceFiles="@(SitecoreIntegrations)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Scripts\SitecoreIntegrations" />
+    <Copy SourceFiles="@(ViewsLayouts)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Layouts" />
+    <Copy SourceFiles="@(ViewsRenderings)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Renderings" />
+    <Copy SourceFiles="@(ViewsRenderingsPartials)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Renderings\_Partials" />
+    <Copy SourceFiles="@(ViewsSiteComponentRenderings)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings" />
+    <Copy SourceFiles="@(ViewsSiteComponentMarqueeItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems" />
     <Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
   </Target>
 </Project>

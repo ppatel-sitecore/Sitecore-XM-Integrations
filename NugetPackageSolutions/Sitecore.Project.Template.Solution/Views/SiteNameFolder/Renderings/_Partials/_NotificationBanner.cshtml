@@ -4,6 +4,7 @@
 @using Sitecore.Resources.Media;
 @using Sitecore.Project.Template.Solution;
 @using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Project.Template.Solution.MVC.Extensions
 @model Item
 
 @{
@@ -37,7 +38,7 @@
             ? string.Format(@"{0} d-none", "close-site-alert float-right") : "close-site-alert float-right";
     var selectedColorItem = FieldExtensions.GetSelectedItemFromDroplistField(siteItem, "Banner Color");
     var divSiteAlertBgColor = selectedColorItem.GetFieldValue("Phrase").Trim();
-    var bannerMessage = FieldExtensions.GetFieldValueByKey(siteItem, "Banner Message").GetCleanRitchTextContent();
+    var bannerMessage = siteItem.GetFieldValue("Banner Message").GetCleanRitchTextContent();
     var mediaItem = FieldExtensions.GetImageField(siteItem, "Banner Icon");
     var mediaItemUrl = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? MediaManager.GetMediaUrl(mediaItem.MediaItem) : string.Empty;
     var mediaItemAltText = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? mediaItem.Alt : string.Empty;
@@ -73,13 +74,13 @@
                                     @if (!string.IsNullOrEmpty(mediaItemUrl) && !string.IsNullOrEmpty(mediaItemAltText))
                                     {
                                         <span class="alert-logo mr-3">
-	                                        @Html.Raw(FieldExtensions.ImageFor(siteItem, "Banner Icon", ""))
+	                                        @FieldExtensions.ImageFor(siteItem, "Banner Icon", "").RenderHtmlString()
                                         </span>
                                     }
                                     @if (!string.IsNullOrEmpty(bannerMessage))
                                     {
                                         <span class="alert-sub-headline b3">
-                                            @Html.Raw(FieldExtensions.GetFieldValueByKey(siteItem, "Banner Message"))
+                                            @FieldExtensions.GetFieldValueByKey(siteItem, "Banner Message").RenderHtmlString()
                                         </span>
                                     }
                                 </div>
