@@ -394,22 +394,22 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
 		/// <returns>The list of targeted Items from this contextItem's Multi-list Field</returns>
-		public static List<Item> GetMultiListValueItems(this Item contextItem, string fieldKey)
+		public static Item[] GetMultiListValueItems(this Item contextItem, string fieldKey)
 		{
 			return FieldExtensions.IsValidFieldValueByKeyHasValue(contextItem, fieldKey) 
-				? FieldExtensions.GetMultiListField(contextItem, fieldKey).GetItems().ToList()
-				: new List<Item>();
+				? FieldExtensions.GetMultiListField(contextItem, fieldKey).GetItems()
+				: new List<Item>().ToArray();
 		}
 
 		/// <summary>Gets the multi list of targeted Items from this contextItem's Multi-list Field.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldId">The field key.</param>
 		/// <returns>The list of targeted Items from this contextItem's Multi-list Field</returns>
-		public static List<Item> GetMultiListValueItems(this Item contextItem, ID fieldId)
+		public static Item[] GetMultiListValueItems(this Item contextItem, ID fieldId)
 		{
 			return FieldExtensions.IsValidFieldValueByKeyHasValue(contextItem, fieldId)
-				? FieldExtensions.GetMultiListField(contextItem, fieldId).GetItems().ToList() 
-				: new List<Item>();
+				? FieldExtensions.GetMultiListField(contextItem, fieldId).GetItems()
+				: new List<Item>().ToArray();
 		}
 
 		/// <summary>Gets the image field item from this contextItem.</summary>
