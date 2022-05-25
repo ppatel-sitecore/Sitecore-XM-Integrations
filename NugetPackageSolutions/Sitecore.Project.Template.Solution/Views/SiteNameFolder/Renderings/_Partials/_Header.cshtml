@@ -255,10 +255,11 @@
 	                                var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
 	                                if (navItem.Template.ID == navCategoryTemplateId)
                                     {
+	                                    var catName = navItem.GetFieldValue("Category Name");
 	                                    var subPageItems = navItem.GetMultiListValueItems("Navigation Links");
 	                                    <li class="dropdown-submenu mr-5 d-flex flex-row float-left">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                                <span class="nav-label">@FieldExtensions.GetFieldValueByKey(navItem, "Category Name")</span> <span class="caret"></span>
+                                                <span class="nav-label">@catName</span> <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu">
 	                                            @foreach (var subPageItem in subPageItems)
