@@ -372,6 +372,24 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return dateField?.DateTime;
 		}
 
+		/// <summary>Gets the link field URL value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The contextItem's link field Url value or null</returns>
+		public static string GetLinkFieldUrlValue(Item contextItem, string fieldKey)
+		{
+			return FieldExtensions.GetLinkFieldUrl(contextItem, fieldKey);
+		}
+
+		/// <summary>Gets the link field URL value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The contextItem's link field Url value or null</returns>
+		public static string GetLinkFieldUrlValue(Item contextItem, ID fieldId)
+		{
+			return FieldExtensions.GetLinkFieldUrl(contextItem, fieldId);
+		}
+
 		/// <summary>Gets the multi list of targeted Items from this contextItem's Multi-list Field.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>

@@ -261,6 +261,21 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return linkUrl;
 		}
 
+		/// <summary>Gets the link field URL by fieldKey.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The Link Field Urls from the contextItem object</returns>
+		public static string GetLinkFieldUrl(Item contextItem, ID fieldId)
+		{
+			var linkUrl = string.Empty;
+			var field = GetLinkField(contextItem, fieldId);
+			if (field != null)
+			{
+				linkUrl = field.GetFriendlyUrl();
+			}
+			return linkUrl;
+		}
+
 		/// <summary>Determines whether [is valid field value by fieldKey] [the specified context item].</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
