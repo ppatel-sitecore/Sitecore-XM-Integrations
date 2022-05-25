@@ -100,7 +100,6 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return checkbox;
 		}
 
-
 		/// <summary>Gets the checkbox field by fieldId.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldId">The field identifier.</param>

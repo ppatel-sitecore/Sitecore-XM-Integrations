@@ -14,60 +14,6 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 {
 	public static class ItemExtensions
 	{
-		/// <summary>Gets the field value by fieldId.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field identifier.</param>
-		/// <returns>The contextItem's field value</returns>
-		public static string GetFieldValueByKey(this Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetFieldValueByKey(contextItem, fieldKey);
-		}
-
-		/// <summary>Gets the checkbox field by fieldKey.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field key.</param>
-		/// <returns>The CheckboxField Item object from the contextItem object</returns>
-		public static CheckboxField GetCheckboxField(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetCheckboxField(contextItem, fieldKey);
-		}
-
-		/// <summary>Gets the date field by fieldKey.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field key.</param>
-		/// <returns>The DateField Item object from the contextItem object</returns>
-		public static DateField GetDateField(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetDateField(contextItem, fieldKey);
-		}
-
-		/// <summary>Gets the multi list field by fieldKey.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field key.</param>
-		/// <returns>The Multi-listField Item object from the contextItem object</returns>
-		public static MultilistField GetMultiListField(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetMultiListField(contextItem, fieldKey);
-		}
-
-		/// <summary>Gets the link field by fieldKey.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field key.</param>
-		/// <returns>The LinkField Item object from the contextItem object</returns>
-		public static LinkField GetLinkField(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetLinkField(contextItem, fieldKey);
-		}
-
-		/// <summary>Gets the reference field by fieldKey.</summary>
-		/// <param name="contextItem">The context item.</param>
-		/// <param name="fieldKey">The field key.</param>
-		/// <returns>The ReferenceField Item object from the contextItem object</returns>
-		public static ReferenceField GetReferenceField(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetReferenceField(contextItem, fieldKey);
-		}
-
 		/// <summary>Gets the media item image.</summary>
 		/// <param name="mediaItem">The media item.</param>
 		/// <param name="imageCss">The image CSS.</param>
@@ -365,6 +311,65 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		{
 			int.TryParse(FieldExtensions.GetFieldValueByKey(contextItem, fieldId), out var result);
 			return result;
+		}
+
+
+		/// <summary>Gets the field value by key.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The contextItem's field value</returns>
+		public static string GetFieldValue(this Item contextItem, string fieldKey)
+		{
+			return FieldExtensions.GetFieldValueByKey(contextItem, fieldKey);
+		}
+
+		/// <summary>Gets the field value by key.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The contextItem's field value</returns>
+		public static string GetFieldValue(this Item contextItem, ID fieldId)
+		{
+			return FieldExtensions.GetFieldValueByKey(contextItem, fieldId);
+		}
+
+		/// <summary>Gets the checkbox checked value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The contextItem's field checked value</returns>
+		public static bool GetCheckboxCheckedValue(this Item contextItem, string fieldKey)
+		{
+			var checkboxField = FieldExtensions.GetCheckboxField(contextItem, fieldKey);
+			return checkboxField != null && checkboxField.Checked;
+		}
+
+		/// <summary>Gets the checkbox checked value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The contextItem's checkbox field checked value</returns>
+		public static bool GetCheckboxCheckedValue(this Item contextItem, ID fieldId)
+		{
+			var checkboxField = FieldExtensions.GetCheckboxField(contextItem, fieldId);
+			return checkboxField != null && checkboxField.Checked;
+		}
+
+		/// <summary>Gets the date field value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The contextItem's checkbox field checked value</returns>
+		public static DateTime? GetDateFieldValue(this Item contextItem, string fieldKey)
+		{
+			var dateField = FieldExtensions.GetDateField(contextItem, fieldKey);
+			return dateField?.DateTime;
+		}
+
+		/// <summary>Gets the date field value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The contextItem's date field value or null</returns>
+		public static DateTime? GetDateFieldValue(this Item contextItem, ID fieldId)
+		{
+			var dateField = FieldExtensions.GetDateField(contextItem, fieldId);
+			return dateField?.DateTime;
 		}
 
 		/// <summary>Gets the multi list of targeted Items from this contextItem's Multi-list Field.</summary>
