@@ -74,7 +74,7 @@
                                     @if (!string.IsNullOrEmpty(mediaItemUrl) && !string.IsNullOrEmpty(mediaItemAltText))
                                     {
                                         <span class="alert-logo mr-3">
-	                                        @FieldExtensions.ImageFor(siteItem, "Banner Icon", "").RenderHtmlString()
+	                                        @siteItem.GetImageFor("Banner Icon", "").RenderHtmlString()
                                         </span>
                                     }
                                     @if (!string.IsNullOrEmpty(bannerMessage))

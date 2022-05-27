@@ -430,6 +430,141 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return FieldExtensions.GetImageField(contextItem, fieldId);
 		}
 
+		/// <summary>Gets the dictionary item from drop down.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The Selected Item from the contextItem object's Droplist Field</returns>
+		public static Item GetDictionaryItemFromDropDown(this Item contextItem, string fieldKey)
+		{
+			return FieldExtensions.GetSelectedItemFromDroplistField(contextItem, fieldKey);
+		}
+
+		/// <summary>Gets the dictionary item from drop down.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The Selected Item from the contextItem object's Droplist Field</returns>
+		public static Item GetDictionaryItemFromDropDown(this Item contextItem, ID fieldId)
+		{
+			return FieldExtensions.GetSelectedItemFromDroplistField(contextItem, fieldId);
+		}
+
+		/// <summary>Gets the dropdown dictionary item value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The Selected DictionaryItem's Phrase Field from the DropDown field object</returns>
+		public static string GetDropdownDictionaryItemValue(this Item contextItem, string fieldKey)
+		{
+			var dictionaryItem = contextItem.GetDictionaryItemFromDropDown(fieldKey);
+			return dictionaryItem.GetFieldValue("Phrase");
+		}
+
+		/// <summary>Gets the dropdown dictionary item value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The Selected DictionaryItem's Phrase Field from the DropDown field object</returns>
+		public static string GetDropdownDictionaryItemValue(this Item contextItem, ID fieldId)
+		{
+			var dictionaryItem = contextItem.GetDictionaryItemFromDropDown(fieldId);
+			return dictionaryItem.GetFieldValue("Phrase");
+		}
+
+		/// <summary>Gets the image as an ImageHtmlString.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <param name="imageCSS">The image CSS.</param>
+		/// <returns>The Image Html string from the contextItem object</returns>
+		public static string GetImageFor(this Item contextItem, string fieldKey, string imageCSS)
+		{
+			return FieldExtensions.ImageHtmlFor(contextItem, fieldKey, imageCSS);
+		}
+
+		/// <summary>Gets the image as an ImageHtmlString.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <param name="imageCSS">The image CSS.</param>
+		/// <returns>The Image Html string from the contextItem object</returns>
+		public static string GetImageFor(this Item contextItem, ID fieldId, string imageCSS)
+		{
+			return FieldExtensions.ImageHtmlFor(contextItem, fieldId, imageCSS);
+		}
+
+		/// <summary>Get the Linkable Image HtmlString with configurable params for the contextItem.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <param name="imageCss">The image CSS.</param>
+		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorCss">The anchor CSS.</param>
+		/// <returns>The Image Link Html string from the contextItem object</returns>
+		public static string GetImageLinkHtmlFor(this Item contextItem, string fieldKey, string imageCss, string anchorId, string anchorUrl, string anchorCss = "")
+		{
+			return FieldExtensions.GetImageLinkHtmlFor(contextItem, fieldKey, imageCss, anchorId, anchorUrl, anchorCss);
+		}
+
+		/// <summary>Get the Linkable Image HtmlString with configurable params for the contextItem.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <param name="imageCss">The image CSS.</param>
+		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorCss">The anchor CSS.</param>
+		/// <returns>The Image Link Html string from the contextItem object</returns>
+		public static string GetImageLinkHtmlFor(this Item contextItem, ID fieldId, string imageCss, string anchorId, string anchorUrl, string anchorCss = "")
+		{
+			return FieldExtensions.GetImageLinkHtmlFor(contextItem, fieldId, imageCss, anchorId, anchorUrl, anchorCss);
+		}
+
+		/// <summary>Gets the HTML for.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorText">The anchor text.</param>
+		/// <param name="anchorCss">The anchor CSS.</param>
+		/// <param name="anchorAttributes">The anchor attributes.</param>
+		/// <returns>The Hyperlink Html string or empty string</returns>
+		public static string GetHtmlFor(this Item contextItem, string anchorUrl, string anchorText, string anchorCss = "", string anchorAttributes = "")
+		{
+			var itemId = contextItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+			return FieldExtensions.GetHyperLinkHtmlFor(itemId, anchorUrl,  anchorText, anchorCss, anchorAttributes);
+		}
+
+		/// <summary>Gets the image URL from item.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The Image Url string value or empty string from the contextItem object</returns>
+		public static string GetImageUrlFromItem(this Item contextItem, string fieldKey)
+		{
+			return FieldExtensions.GetImageUrlFromItem(contextItem, fieldKey);
+		}
+
+		/// <summary>Gets the image URL from item.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field identifier.</param>
+		/// <returns>The Image Url string value or empty string from the contextItem object</returns>
+		public static string GetImageUrlFromItem(this Item contextItem, ID fieldId)
+		{
+			return FieldExtensions.GetImageUrlFromItem(contextItem, fieldId);
+		}
+
+		/// <summary>Gets the drop trees dictionary item value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldKey">The field key.</param>
+		/// <returns>The Selected DictionaryItem's Phrase Field from the DropTrees field object</returns>
+		public static string GetDropTreesDictionaryItemValue(this Item contextItem, string fieldKey)
+		{
+			ReferenceField referenceField = contextItem.Fields[fieldKey];
+			return FieldExtensions.GetFieldValueByKey(referenceField.TargetItem, "Phrase");
+		}
+
+		/// <summary>Gets the drop trees dictionary item value.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field identifier.</param>
+		/// <returns>The Selected DictionaryItem's Phrase Field from the DropTrees field object</returns>
+		public static string GetDropTreesDictionaryItemValue(this Item contextItem, ID fieldId)
+		{
+			ReferenceField referenceField = contextItem.Fields[fieldId];
+			return FieldExtensions.GetFieldValueByKey(referenceField.TargetItem, "Phrase");
+		}
+
 		/// <summary>Determines whether this contextItem has a context language.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <returns>

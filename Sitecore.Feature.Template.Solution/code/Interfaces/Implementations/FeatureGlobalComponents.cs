@@ -23,24 +23,24 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				marqueeItem.Headline = HelpersExt.GetFieldVaue(contextItem, "Headline");
-				marqueeItem.SubHeadline = HelpersExt.GetFieldVaue(contextItem, "Sub Headline");
-				marqueeItem.Description = HelpersExt.GetFieldVaue(contextItem, "Description");
-				marqueeItem.CTAButton1Text = HelpersExt.GetFieldVaue(contextItem, "CTA Button 1 Text");
-				marqueeItem.CTAButton1Link = HelpersExt.GetLinkFieldUrl(contextItem, "MCTA Button 1 Link");
-				marqueeItem.CTAButton2Text = HelpersExt.GetFieldVaue(contextItem, "CTA Button 2 Text");
-				marqueeItem.CTAButton2Link = HelpersExt.GetLinkFieldUrl(contextItem, "CTA Button 2 Link");
-				marqueeItem.BackgroundImageAltText = HelpersExt.GetFieldVaue(contextItem, "Background Image Alt Text");
-				marqueeItem.BackgroundImageUrl = HelpersExt.GetImageUrlFromItem(contextItem, "Background Image");
-				marqueeItem.BackgroundImageMobileUrl = HelpersExt.GetImageUrlFromItem(contextItem, "Background Image Mobile");
-				marqueeItem.OverrideBackgroundWithColor = HelpersExt.IsForOverrideBackgroundWithColor(contextItem, "Override Background With Color");
-				marqueeItem.BackgroundColorCSS = HelpersExt.GetDroptressDictionaryValue(contextItem, "Background Color");
-				marqueeItem.SwapPromoPosition = HelpersExt.IsForOverrideBackgroundWithColor(contextItem, "Swap Promo Position");
+				marqueeItem.Headline = contextItem.GetFieldValue("Headline");
+				marqueeItem.SubHeadline = contextItem.GetFieldValue("Sub Headline");
+				marqueeItem.Description = contextItem.GetFieldValue("Description");
+				marqueeItem.CTAButton1Text = contextItem.GetFieldValue("CTA Button 1 Text");
+				marqueeItem.CTAButton1Link = contextItem.GetLinkFieldUrlValue("MCTA Button 1 Link");
+				marqueeItem.CTAButton2Text = contextItem.GetFieldValue("CTA Button 2 Text");
+				marqueeItem.CTAButton2Link = contextItem.GetLinkFieldUrlValue("CTA Button 2 Link");
+				marqueeItem.BackgroundImageAltText = contextItem.GetFieldValue("Background Image Alt Text");
+				marqueeItem.BackgroundImageUrl = contextItem.GetImageUrlFromItem("Background Image");
+				marqueeItem.BackgroundImageMobileUrl = contextItem.GetImageUrlFromItem("Background Image Mobile");
+				marqueeItem.OverrideBackgroundWithColor = contextItem.GetCheckboxCheckedValue("Override Background With Color");
+				marqueeItem.BackgroundColorCSS = contextItem.GetDropTreesDictionaryItemValue("Background Color");
+				marqueeItem.SwapPromoPosition = contextItem.GetCheckboxCheckedValue("Swap Promo Position");
 
 				if (!isLargeMarqueeItem)
 				{
-					marqueeItem.MarqueeLeftColumnCSSSize = HelpersExt.GetFieldVaue(contextItem, "Marquee Left Column CSS Size");
-					marqueeItem.MarqueeRightColumnCSSSize = HelpersExt.GetFieldVaue(contextItem, "Marquee Right Column CSS Size");
+					marqueeItem.MarqueeLeftColumnCSSSize = contextItem.GetFieldValue("Marquee Left Column CSS Size");
+					marqueeItem.MarqueeRightColumnCSSSize = contextItem.GetFieldValue("Marquee Right Column CSS Size");
 				}
 			}
 			catch (Exception ex)
@@ -60,9 +60,9 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
 
-				calloutListItem.Title = HelpersExt.GetFieldVaue(contextItem, "Headline");
-				calloutListItem.BodyContent = HelpersExt.GetFieldVaue(contextItem, "Body Content");
-				calloutListItem.BodyRowColorCSS = HelpersExt.GetDroptressDictionaryValue(contextItem, "Body Row Color");
+				calloutListItem.Title = contextItem.GetFieldValue("Headline");
+				calloutListItem.BodyContent = contextItem.GetFieldValue("Body Content");
+				calloutListItem.BodyRowColorCSS = contextItem.GetImageUrlFromItem("Body Row Color");
 				var ctaCardItems = FieldExtensions.GetMultiListField(contextItem, "CTA Card Items");
 				if (ctaCardItems != null && ctaCardItems.TargetIDs.Length > 0)
 				{
@@ -89,11 +89,11 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				ctaCard.CTAStyledClasses = HelpersExt.GetFieldVaue(contextItem, "CTA Styled Classes");
-				ctaCard.CTASubHeadline = HelpersExt.GetFieldVaue(contextItem, "CTA Sub Headline");
-				ctaCard.CTALinkModalAttributes = HelpersExt.GetFieldVaue(contextItem, "CTA Link Custom Attributes");
-				ctaCard.LinkText = HelpersExt.GetFieldVaue(contextItem, "Link Text");
-				ctaCard.LinkUrl = HelpersExt.GetLinkFieldUrl(contextItem, "Link Url");
+				ctaCard.CTAStyledClasses = contextItem.GetFieldValue("CTA Styled Classes");
+				ctaCard.CTASubHeadline = contextItem.GetFieldValue("CTA Sub Headline");
+				ctaCard.CTALinkModalAttributes = contextItem.GetFieldValue("CTA Link Custom Attributes");
+				ctaCard.LinkText = contextItem.GetFieldValue("Link Text");
+				ctaCard.LinkUrl = contextItem.GetLinkFieldUrlValue("Link Url");
 			}
 			catch (Exception ex)
 			{
@@ -111,9 +111,9 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				iconNavCard.IconImageUrl = HelpersExt.GetImageUrlFromItem(contextItem, "Icon Image");
-				iconNavCard.LinkText = HelpersExt.GetFieldVaue(contextItem, "Link Text");
-				iconNavCard.LinkUrl = HelpersExt.GetLinkFieldUrl(contextItem, "Link Url");
+				iconNavCard.IconImageUrl = contextItem.GetImageUrlFromItem("Icon Image");
+				iconNavCard.LinkText = contextItem.GetFieldValue("Link Text");
+				iconNavCard.LinkUrl = contextItem.GetLinkFieldUrlValue("Link Url");
 			}
 			catch (Exception ex)
 			{
@@ -132,7 +132,7 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				infoCardCollection.Headline = HelpersExt.GetFieldVaue(contextItem, "Headline");
+				infoCardCollection.Headline = contextItem.GetFieldValue("Headline");
 				var infoCardItems = FieldExtensions.GetMultiListField(contextItem, "Info Cards");
 				if (infoCardItems != null && infoCardItems.TargetIDs.Length > 0)
 				{
@@ -159,13 +159,13 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				infoCard.Title = HelpersExt.GetFieldVaue(contextItem, "Title");
-				infoCard.Description = HelpersExt.GetFieldVaue(contextItem, "Description");
-				infoCard.CardIconImage = HelpersExt.GetImageUrlFromItem(contextItem, "Card Icon Image");
-				infoCard.CardLargeImage = HelpersExt.GetImageUrlFromItem(contextItem, "Card Large Image");
-				infoCard.IconImageUrl = HelpersExt.GetImageUrlFromItem(contextItem, "Icon Image");
-				infoCard.IconImageLinkText = HelpersExt.GetFieldVaue(contextItem, "Link Text");
-				infoCard.IconImageLinkUrl = HelpersExt.GetLinkFieldUrl(contextItem, "Link Url");
+				infoCard.Title = contextItem.GetFieldValue("Title");
+				infoCard.Description = contextItem.GetFieldValue("Description");
+				infoCard.CardIconImage = contextItem.GetImageUrlFromItem("Card Icon Image");
+				infoCard.CardLargeImage = contextItem.GetImageUrlFromItem("Card Large Image");
+				infoCard.IconImageUrl = contextItem.GetImageUrlFromItem("Icon Image");
+				infoCard.IconImageLinkText = contextItem.GetFieldValue("Link Text");
+				infoCard.IconImageLinkUrl = contextItem.GetLinkFieldUrlValue("Link Url");
 
 				var relInfoCardItems = FieldExtensions.GetMultiListField(contextItem, "Related Cards");
 				if (relInfoCardItems != null && relInfoCardItems.TargetIDs.Length > 0)
@@ -193,8 +193,8 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				infoMediaCollection.Headline = HelpersExt.GetFieldVaue(contextItem, "Headline");
-				infoMediaCollection.ReferencesBlockContent = HelpersExt.GetFieldVaue(contextItem, "References Block Content");
+				infoMediaCollection.Headline = contextItem.GetFieldValue("Headline");
+				infoMediaCollection.ReferencesBlockContent = contextItem.GetFieldValue("References Block Content");
 
 				var infoMediaItems = FieldExtensions.GetMultiListField(contextItem, "Video Or Imagery");
 				if (infoMediaItems != null && infoMediaItems.TargetIDs.Length > 0)
@@ -207,14 +207,14 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 							var mediaItem = new VideoOrImageLayerItem();
 							if (mediaItem != null)
 							{
-								mediaItem.Title = HelpersExt.GetFieldVaue(infoMediaItem, "Title");
-								mediaItem.SubTitle = HelpersExt.GetFieldVaue(infoMediaItem, "Sub Title");
-								mediaItem.Description = HelpersExt.GetFieldVaue(infoMediaItem, "Description");
-								mediaItem.ImageURL = HelpersExt.GetImageUrlFromItem(infoMediaItem, "Image URL");
+								mediaItem.Title = infoMediaItem.GetFieldValue("Title");
+								mediaItem.SubTitle = infoMediaItem.GetFieldValue("Sub Title");
+								mediaItem.Description = infoMediaItem.GetFieldValue("Description");
+								mediaItem.ImageURL = infoMediaItem.GetImageUrlFromItem("Image URL");
 								mediaItem.MediaItemAltText = $@"{mediaItem.Title} - {mediaItem.SubTitle}";
-								mediaItem.CardColumnCSS = HelpersExt.GetFieldVaue(infoMediaItem, "Card Column CSS");
-								mediaItem.VideoHashId = HelpersExt.GetImageUrlFromItem(infoMediaItem, "VideoHashId");
-								mediaItem.Runtime = HelpersExt.GetFieldVaue(infoMediaItem, "Runtime");
+								mediaItem.CardColumnCSS = infoMediaItem.GetFieldValue("Card Column CSS");
+								mediaItem.VideoHashId = infoMediaItem.GetImageUrlFromItem("VideoHashId");
+								mediaItem.Runtime = infoMediaItem.GetFieldValue("Runtime");
 								infoMediaCollection.MediaItems.Add(mediaItem);
 							}
 						}
@@ -237,14 +237,14 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				int.TryParse(HelpersExt.GetFieldVaue(contextItem, "Index").Trim(), out int resultIndex);
+				int.TryParse(contextItem.GetFieldValue("Index").Trim(), out int resultIndex);
 				imageLayer.Index = resultIndex;
-				imageLayer.Title = HelpersExt.GetFieldVaue(contextItem, "Title");
-				imageLayer.SubTitle = HelpersExt.GetFieldVaue(contextItem, "Sub Title");
-				imageLayer.Description = HelpersExt.GetFieldVaue(contextItem, "Description");
-				imageLayer.ImageURL = HelpersExt.GetImageUrlFromItem(contextItem, "Image URL");
+				imageLayer.Title = contextItem.GetFieldValue("Title");
+				imageLayer.SubTitle = contextItem.GetFieldValue("Sub Title");
+				imageLayer.Description = contextItem.GetFieldValue("Description");
+				imageLayer.ImageURL = contextItem.GetImageUrlFromItem("Image URL");
 				imageLayer.MediaItemAltText = $@"{imageLayer.Title} - {imageLayer.SubTitle}";
-				imageLayer.CardColumnCSS = HelpersExt.GetFieldVaue(contextItem, "Card Column CSS");
+				imageLayer.CardColumnCSS = contextItem.GetFieldValue("Card Column CSS");
 			}
 			catch (Exception ex)
 			{
@@ -262,112 +262,16 @@ namespace Sitecore.Feature.GlobalComponentLibrary.Interfaces.Implementations
 			try
 			{
 				var contextItem = _dbMasterContext.GetItem(itemId);
-				downloadItem.ImageAltText = HelpersExt.GetFieldVaue(contextItem, "Image Alt Text");
-				downloadItem.ImageUrl = HelpersExt.GetImageUrlFromItem(contextItem, "Image");
-				downloadItem.DownloadAssetUrl = HelpersExt.GetLinkFieldUrl(contextItem, "Download Asset");
-				downloadItem.DownloadButtonText = HelpersExt.GetFieldVaue(contextItem, "Download Button Text");
+				downloadItem.ImageAltText = contextItem.GetFieldValue("Image Alt Text");
+				downloadItem.ImageUrl = contextItem.GetImageUrlFromItem("Image");
+				downloadItem.DownloadAssetUrl = contextItem.GetLinkFieldUrlValue("Download Asset");
+				downloadItem.DownloadButtonText = contextItem.GetFieldValue("Download Button Text");
 			}
 			catch (Exception ex)
 			{
 				Log.Error($@"{_appLogFileKey}-{Helpers.GetMethodName()}-ExceptionLog: {ex.Message}.", ex, this);
 			}
 			return downloadItem;
-		}
-	}
-
-	public static class HelpersExt
-	{
-		/// <summary>
-		/// Common re-usable GetDictionaryItemFromDropDown() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		private static Item GetDictionaryItemFromDropDown(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetSelectedItemFromDroplistField(contextItem, fieldKey);
-		}
-
-		/// <summary>
-		/// Common re-usable GetDictionaryItemValue() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static string GetDictionaryItemValue(Item contextItem, string fieldKey)
-		{
-			Item dictionaryItem = GetDictionaryItemFromDropDown(contextItem, fieldKey);
-			return FieldExtensions.GetFieldValueByKey(dictionaryItem, "Phrase");
-		}
-
-		/// <summary>
-		/// Common re-usable GetFieldVaue() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static string GetFieldVaue(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetFieldValueByKey(contextItem, fieldKey);
-		}
-
-		/// <summary>
-		/// Common re-usable GetLinkFieldUrl() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static string GetLinkFieldUrl(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetLinkFieldUrl(contextItem, fieldKey);
-		}
-
-		/// <summary>
-		/// Common re-usable GetImageFor() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <param name="imageCSS"></param>
-		/// <returns></returns>
-		public static string GetImageFor(Item contextItem, string fieldKey, string imageCSS)
-		{
-			return FieldExtensions.ImageFor(contextItem, fieldKey, imageCSS);
-		}
-
-		/// <summary>
-		/// Common re-usable IsForOverrideBackgroundWithColor() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static bool IsForOverrideBackgroundWithColor(Item contextItem, string fieldKey)
-		{
-			var checkBox = FieldExtensions.GetCheckboxField(contextItem, fieldKey);
-			return (checkBox != null) ? checkBox.Checked : false;
-		}
-
-		/// <summary>
-		/// Common re-usable GetImageUrlFromItem() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static string GetImageUrlFromItem(Item contextItem, string fieldKey)
-		{
-			return FieldExtensions.GetImageUrlFromItem(contextItem, fieldKey);
-		}
-
-		/// <summary>
-		/// Common re-usable GetDroplistDictionaryValue() method
-		/// </summary>
-		/// <param name="contextItem"></param>
-		/// <param name="fieldKey"></param>
-		/// <returns></returns>
-		public static string GetDroptressDictionaryValue(Item contextItem, string fieldKey)
-		{
-			ReferenceField referenceField = contextItem.Fields[fieldKey];
-			string dictionaryVal = FieldExtensions.GetFieldValueByKey(referenceField.TargetItem, "Phrase");
-			return dictionaryVal;
 		}
 	}
 }

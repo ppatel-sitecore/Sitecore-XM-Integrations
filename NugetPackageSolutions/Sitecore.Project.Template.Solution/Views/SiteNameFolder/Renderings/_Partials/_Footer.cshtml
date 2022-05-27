@@ -14,7 +14,8 @@
     var targetHostUrl = HelpersExt.GetTargetHostNameUrl();
     var leftFooterLinks = siteItem.GetMultiListValueItems("Left Links List");
     var rightFooterLinks = siteItem.GetMultiListValueItems("Right Links List");
-    var imageLinkFor = FieldExtensions.ImageLinkFor(siteItem, "Footer Logo", "",
+	var siteItemId = siteItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+    var imageLinkFor = siteItem.GetImageLinkHtmlFor("Footer Logo", "", siteItemId,
         targetHostUrl, "footer-logo");
 
     var disclosureContent = siteItem.GetFieldValue("Copyright and Disclosure Text")
@@ -42,10 +43,10 @@
 
                                 if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                                 {
-                                    <li>
-                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
-                                            "secondary-accent-blue-light", anchorAttributes)
-                                    </li>
+	                                <li>
+		                                @navItem.GetHtmlFor(linkUrl, linkText, "secondary-accent-blue-light", 
+			                                anchorAttributes).RenderHtmlString()
+	                                </li>
                                 }
                             }
                         </ul>
@@ -72,10 +73,9 @@
 
                         if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                         {
-                            <li class="d-flex flex-row mb-2">
-                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
-                                    "", anchorAttributes)
-                            </li>
+	                        <li class="d-flex flex-row mb-2">
+		                        @navItem.GetHtmlFor(linkUrl, linkText, "", anchorAttributes).RenderHtmlString()
+	                        </li>
                         }
                     }
                 </ul>
@@ -93,10 +93,10 @@
 
                         if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                         {
-                            <li class="d-flex flex-row mb-2">
-                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navItem.ID.ToString(),
-                                    "secondary-accent-blue-light", anchorAttributes)
-                            </li>
+	                        <li class="d-flex flex-row mb-2">
+		                        @navItem.GetHtmlFor(linkUrl, linkText, "secondary-accent-blue-light", 
+			                        anchorAttributes).RenderHtmlString()
+	                        </li>
                         }
                     }
                 </ul>

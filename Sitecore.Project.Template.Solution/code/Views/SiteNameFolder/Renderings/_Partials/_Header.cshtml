@@ -11,11 +11,15 @@
     var appSettings = siteController.ConfigSettings.AppSettings;
 
     var linkText = string.Empty;
-    var linkUrl = string.Empty; 
-	var targetHostUrl = HelpersExt.GetTargetHostNameUrl();
-	var menuLinksPrimary = siteItem.GetMultiListValueItems("Menu Links Primary");
+    var linkUrl = string.Empty;
+    var targetHostUrl = HelpersExt.GetTargetHostNameUrl();
+    var menuLinksPrimary = siteItem.GetMultiListValueItems("Menu Links Primary");
     var menuLinksSecondary = siteItem.GetMultiListValueItems("Menu Links Secondary");
-    var imageLinkFor = FieldExtensions.ImageLinkFor(siteItem, "Desktop Menu Logo", "", "/", "header-logo");
+	var siteItemId = siteItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
+    var imageLinkFor = siteItem.GetImageLinkHtmlFor("Desktop Menu Logo", "", siteItemId,
+	    targetHostUrl, "header-logo");
+	var imageMobileLinkFor = siteItem.GetImageLinkHtmlFor("Mobile Menu Logo", "", siteItemId,
+		targetHostUrl, "navbar-brand d-lg-none");
 
     var navCategoryTemplateId = siteController.ConfigSettings.GetNavCategoryTemplateId();
     var pageTypeTemplateId = siteController.ConfigSettings.GetPageTypeTemplateId();
@@ -85,9 +89,8 @@
                         {
 	                        var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
 	                        var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) ? "secondary-accent-blue-light" : string.Empty;
-                            <li class="px-3 d-flex flex-row float-left">
-	                            @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),navMenuItemId, lightClass, 
-		                            anchorAttributes).RenderHtmlString()
+	                        <li class="px-3 d-flex flex-row float-left">y
+								@navItem.GetHtmlFor(linkUrl, linkText, lightClass, anchorAttributes).RenderHtmlString()
                             </li>
                         }
                     }
@@ -147,15 +150,15 @@
                             {
 	                            linkText = navItem.GetFieldValue("Link Text");
 	                            linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
-	                            var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+	                            var anchorAttr = string.Format(@"aria-label='{0}'", linkText);
 
 	                            if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                                 {
-                                    var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) ? "secondary-accent-blue-light" : string.Empty;
-                                    <li class="ml-3 d-flex flex-row float-left">
-	                                    @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),navMenuItemId, lightClass,
-		                                    anchorAttributes).RenderHtmlString()
-                                    </li>
+                                    var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) 
+	                                    ? "secondary-accent-blue-light" : string.Empty;
+	                                <li class="ml-3 d-flex flex-row float-left">
+                                        @navItem.GetHtmlFor(linkUrl, linkText, lightClass, anchorAttr).RenderHtmlString()
+	                                </li>
                                 }
                             }
                         }
@@ -190,11 +193,10 @@
 
                                                 if (subPageItem != null)
                                                 {
-	                                                var subMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
 	                                                var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
 	                                                <li class="li-item">
-		                                                @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),
-			                                                subMenuItemId, "", anchorAttr).RenderHtmlString()
+                                                        @navItem.GetHtmlFor(linkUrl, linkText, lightClass, 
+	                                                        anchorAttr).RenderHtmlString()
 	                                                </li>
                                                 }
                                             }
@@ -206,16 +208,15 @@
                             {
 	                            linkText = navItem.GetFieldValue("Link Text");
 	                            linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
-	                            var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+	                            var anchorAttr = string.Format(@"aria-label='{0}'", linkText);
 
 	                            if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                                 {
                                     var btnCss = (navItem.Template.DisplayName == "CTA Link") ? "btn btn--solirisgmgpro-secondary-orange" : string.Empty;
                                     var liCss = (!string.IsNullOrEmpty(btnCss)) ? "cta-li" : string.Empty;
-                                    <li class="d-flex flex-row float-left @liCss">
-	                                    @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, btnCss, 
-		                                    anchorAttributes).RenderHtmlString()
-                                    </li>
+	                                <li class="d-flex flex-row float-left @liCss">
+                                        @navItem.GetHtmlFor(linkUrl, linkText, btnCss, anchorAttr).RenderHtmlString()
+	                                </li>
                                 }
                             }
                         }
@@ -224,11 +225,9 @@
                 </ul>
             </div>
             <!-- [Mobile Hamburger Menu New] -->
-            @if (!string.IsNullOrEmpty(imageLinkFor))
+            @if (!string.IsNullOrEmpty(imageMobileLinkFor))
             {
-	            @FieldExtensions.ImageLinkFor(siteItem, "Mobile Menu Logo", 
-		            "", "/", "mobile-header-logo", 
-		            "navbar-brand d-lg-none").RenderHtmlString()
+	            @imageMobileLinkFor.RenderHtmlString()
             }
             <button id="mobile-hamburger-menu" class="open-mobile-menu navbar-toggler d-lg-none p-0 my-3 ml-3 float-left" type="button" aria-controls="mobile-links-nav" aria-expanded="false" aria-label="Toggle docs navigation">
                 <div class="animated-icon1 mr-3">
@@ -269,10 +268,10 @@
 
                                                     if (subPageItem != null)
                                                     {
-	                                                    var nsubMenuItemId = subPageItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
-	                                                    var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, subPageItem.Name.Replace("-", " "));
+	                                                    var anchorAttr = string.Format(@"aria-label='{0} - {1}'", linkText, 
+		                                                    subPageItem.Name.Replace("-", " "));
 	                                                    <li class="li-item">
-		                                                    @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), nsubMenuItemId, "", 
+		                                                    @navItem.GetHtmlFor(linkUrl, linkText, "", 
 			                                                    anchorAttr).RenderHtmlString()
 	                                                    </li>
                                                     }
@@ -284,14 +283,14 @@
                                     {
 	                                    linkText = navItem.GetFieldValue("Link Text");
 	                                    linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
-	                                    var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
+	                                    var anchorAttr = string.Format(@"aria-label='{0}'", linkText);
 
 	                                    if (navItem != null && navItem.Template.DisplayName != "CTA Link" && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                                         {
-                                            <li class="d-flex flex-row float-left">
-	                                            @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, 
-		                                            "", anchorAttributes).RenderHtmlString()
-                                            </li>
+	                                        <li class="d-flex flex-row float-left">
+		                                        @navItem.GetHtmlFor(linkUrl, linkText, "", 
+			                                        anchorAttr).RenderHtmlString()
+	                                        </li>
                                         }
                                     }
                                 }
@@ -318,16 +317,16 @@
                                 {
 	                                linkText = navItem.GetFieldValue("Link Text");
 	                                linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
-	                                var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
 
-                                    var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) 
+	                                var anchorAttr = string.Format(@"aria-label='{0}'", linkText);
+	                                var lightClass = (index == 0 || (index == (menuLinksPrimary.Length - 1))) 
 	                                    ? "secondary-accent-blue-light" : string.Empty;
                                     if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                                     {
-                                        <li class="ml-3 d-flex flex-row float-left">
-	                                        @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(), navMenuItemId, 
-		                                        "", anchorAttributes).RenderHtmlString()
-                                        </li>
+	                                    <li class="ml-3 d-flex flex-row float-left">
+		                                    @navItem.GetHtmlFor(linkUrl, linkText, lightClass, 
+			                                    anchorAttr).RenderHtmlString()
+	                                    </li>
                                     }
                                 }
                                 index++;
@@ -339,9 +338,9 @@
 	                    {
 		                    linkText = navItem.GetFieldValue("Link Text");
 		                    linkUrl = navItem.GetLinkFieldUrlValue("Link Url");
-                            var anchorAttributes = string.Format(@"aria-label='{0}'", linkText);
 
-                            if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
+                            var anchorAttr = string.Format(@"aria-label='{0}'", linkText);
+		                    if (navItem != null && !string.IsNullOrEmpty(linkText) && !string.IsNullOrEmpty(linkUrl))
                             {
 	                            var navMenuItemId = navItem.ID.ToString().RemoveSpecifiedChars("[{}]", true);
                                 if (navItem.Template.DisplayName == "CTA Link")
@@ -349,8 +348,7 @@
                                     var btnCss = (navItem.Template.DisplayName == "CTA Link") 
 	                                    ? "btn btn-solirigmgpro btn--solirisgmgpro-secondary" 
 	                                    : "btn btn-solirigmgpro btn--solirisgmgpro-secondary-orange";
-                                    @FieldExtensions.HyperLinkFor(linkText, linkUrl.ToLower(),
-                                        navMenuItemId, btnCss, anchorAttributes).RenderHtmlString()
+	                                @navItem.GetHtmlFor(linkUrl, linkText, btnCss, anchorAttr).RenderHtmlString()
                                 }
                                 else
                                 {

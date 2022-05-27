@@ -58,11 +58,28 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		public static string GetImageUrlFromItem(Item contextItem, string fieldKey)
 		{
 			var imageItem = GetImageField(contextItem, fieldKey);
+			return GetItemImageUrl(imageItem);
+		}
+
+		/// <summary>Gets the image URL from item by fieldId.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The Image Url string value or empty string from the contextItem object</returns>
+		public static string GetImageUrlFromItem(Item contextItem, ID fieldId)
+		{
+			var imageItem = GetImageField(contextItem, fieldId);
+			return GetItemImageUrl(imageItem);
+		}
+
+		/// <summary>Gets the item image URL.</summary>
+		/// <param name="imageItem">The image item.</param>
+		/// <returns>The Image Url string value or empty string from the contextItem object</returns>
+		private static string GetItemImageUrl(ImageField imageItem)
+		{
 			if (imageItem?.MediaItem == null)
 			{
 				return string.Empty;
 			}
-
 			var imageMedia = new MediaItem(imageItem.MediaItem);
 			var imageUrl = StringUtil.EnsurePrefix('/', MediaManager.GetMediaUrl(imageMedia));
 			return imageUrl;
@@ -282,7 +299,7 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <returns>
 		///   <c>true</c> if [is valid field value by key] [the specified context item]; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsValidFieldValueByKey(Item contextItem, string fieldKey)
+		private static bool IsValidFieldValueByKey(Item contextItem, string fieldKey)
 		{
 			return contextItem?.Fields[fieldKey] != null;
 		}
@@ -442,14 +459,39 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="imageCss">The image CSS.</param>
 		/// <returns>The Image Html string from the contextItem object</returns>
 		[Obsolete]
-		public static string ImageFor(Item contextItem, string fieldKey, string imageCss)
+		public static string ImageHtmlFor(Item contextItem, string fieldKey, string imageCss)
 		{
 			if (contextItem == null || string.IsNullOrEmpty(fieldKey) || !IsValidFieldValueByKey(contextItem, fieldKey))
 			{
 				return string.Empty;
 			}
-
 			var imageItem = GetImageField(contextItem, fieldKey);
+			return GetImageHtmlString(imageItem, imageCss);
+		}
+
+		/// <summary>Get the Image HtmlString with configurable params for the contextItem.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <param name="imageCss">The image CSS.</param>
+		/// <returns>The Image Html string from the contextItem object</returns>
+		[Obsolete]
+		public static string ImageHtmlFor(Item contextItem, ID fieldId, string imageCss)
+		{
+			if (contextItem == null || fieldId != ID.Null)
+			{
+				return string.Empty;
+			}
+			var imageItem = GetImageField(contextItem, fieldId);
+			return GetImageHtmlString(imageItem, imageCss);
+		}
+
+		/// <summary>Gets the image HTML string.</summary>
+		/// <param name="imageItem">The image item.</param>
+		/// <param name="imageCss">The image CSS.</param>
+		/// <returns>The Image Html string from the contextItem object</returns>
+		[Obsolete]
+		private static string GetImageHtmlString(ImageField imageItem, string imageCss)
+		{
 			var menuLogoUrl = imageItem == null ? string.Empty : imageItem.ImageUrl();
 			var menuLogoAltText = imageItem == null ? string.Empty : imageItem.Alt.Trim();
 			var pageId = imageItem == null ? string.Empty : imageItem.MediaID.Guid.ToString().RemoveSpecifiedChars("[{}]", true);
@@ -460,23 +502,55 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
 		/// <param name="imageCss">The image CSS.</param>
-		/// <param name="anchorUrl">The anchor URL.</param>
 		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
 		/// <param name="anchorCss">The anchorCss CSS.</param>
 		/// <returns>The Image Link Html string from the contextItem object</returns>
-		public static string ImageLinkFor(Item contextItem, string fieldKey, string imageCss, string anchorUrl, string anchorId, string anchorCss = "")
+		public static string GetImageLinkHtmlFor(Item contextItem, string fieldKey, string imageCss, string anchorId, string anchorUrl, string anchorCss = "")
 		{
-			var imageLinkedElement = string.Empty;
-			var imageElement = ImageFor(contextItem, fieldKey, imageCss);
-			if (string.IsNullOrEmpty(imageElement))
+			var imageElement = ImageHtmlFor(contextItem, fieldKey, imageCss);
+			if (string.IsNullOrEmpty(imageElement.Trim()))
 			{
-				return imageLinkedElement;
+				return string.Empty;
 			}
-
 			var imageItem = GetImageField(contextItem, fieldKey);
+			return GetImageLinkHtmlString(imageItem, imageElement, anchorId, anchorUrl, anchorCss);
+		}
+
+		/// <summary>Get the Linkable Image HtmlString with configurable params for the contextItem.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <param name="imageCss">The image CSS.</param>
+		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorCss">The anchorCss CSS.</param>
+		/// <returns>The Image Link Html string from the contextItem object</returns>
+		public static string GetImageLinkHtmlFor(Item contextItem, ID fieldId, string imageCss, string anchorId, string anchorUrl, string anchorCss = "")
+		{
+			var imageElement = ImageHtmlFor(contextItem, fieldId, imageCss);
+			if (string.IsNullOrEmpty(imageElement.Trim()))
+			{
+				return string.Empty;
+			}
+			var imageItem = GetImageField(contextItem, fieldId);
+			return GetImageLinkHtmlString(imageItem, imageElement, anchorId, anchorUrl, anchorCss);
+		}
+
+		/// <summary>Gets the image link HTML string.</summary>
+		/// <param name="imageItem">The image item.</param>
+		/// <param name="imageElement">The image element.</param>
+		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorCss">The anchor CSS.</param>
+		/// <returns>The Image Link Html string from the contextItem object</returns>
+		private static string GetImageLinkHtmlString(ImageField imageItem, string imageElement, string anchorId, string anchorUrl, string anchorCss = "")
+		{
+			if (imageItem == null || string.IsNullOrEmpty(anchorId.Trim()) || string.IsNullOrEmpty(anchorUrl.Trim()))
+			{
+				return string.Empty;
+			}
 			var menuLogoAltText = (imageItem != null) ? imageItem.Alt : string.Empty;
-			imageLinkedElement = HyperLinkFor(imageElement, anchorUrl, anchorId, anchorCss, $@"aria-label='{menuLogoAltText}'");
-			return imageLinkedElement;
+			return GetHyperLinkHtmlFor(anchorId, anchorUrl, imageElement, anchorCss, $@"aria-label='{menuLogoAltText}'");
 		}
 
 		/// <summary>Determines whether [is item for scheduled display] [the specified identifier].</summary>
@@ -523,6 +597,23 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 			return contextItem.Database.GetItem(selectedItemPath);
 		}
 
+		/// <summary>Gets the selected item from droplist field by fieldId.</summary>
+		/// <param name="contextItem">The context item.</param>
+		/// <param name="fieldId">The field key.</param>
+		/// <returns>The Item object in a DroplistField Item object</returns>
+		public static Item GetSelectedItemFromDroplistField(Item contextItem, ID fieldId)
+		{
+			var field = contextItem.Fields[fieldId];
+			if (field == null || string.IsNullOrEmpty(field.Value))
+			{
+				return null;
+			}
+
+			var fieldSource = field.Source ?? string.Empty;
+			var selectedItemPath = $@"{fieldSource.TrimEnd('/')}/{field.Value}";
+			return contextItem.Database.GetItem(selectedItemPath);
+		}
+
 		/// <summary>Gets the droplist dictionary value by fieldKey.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <param name="fieldKey">The field key.</param>
@@ -547,15 +638,15 @@ namespace Sitecore.Foundation.SitecoreExtensions.Extensions
 		}
 
 		/// <summary>Get the Hyperlink HtmlString with configurable params.</summary>
-		/// <param name="anchorText">The anchor text.</param>
-		/// <param name="anchorUrl">The anchor URL.</param>
 		/// <param name="anchorId">The anchor identifier.</param>
+		/// <param name="anchorUrl">The anchor URL.</param>
+		/// <param name="anchorText">The anchor text.</param>
 		/// <param name="anchorCss">The anchor CSS.</param>
 		/// <param name="anchorAttributes">The anchor attributes.</param>
 		/// <returns>The Hyperlink Html string or empty string</returns>
-		public static string HyperLinkFor(string anchorText, string anchorUrl, string anchorId, string anchorCss = "", string anchorAttributes = "")
+		public static string GetHyperLinkHtmlFor(string anchorId, string anchorUrl, string anchorText, string anchorCss = "", string anchorAttributes = "")
 		{
-			if (string.IsNullOrEmpty(anchorText) || string.IsNullOrEmpty(anchorUrl) || string.IsNullOrEmpty(anchorId))
+			if (string.IsNullOrEmpty(anchorId) || string.IsNullOrEmpty(anchorText) || string.IsNullOrEmpty(anchorUrl))
 			{
 				return string.Empty;
 			}
