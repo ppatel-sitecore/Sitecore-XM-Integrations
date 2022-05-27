@@ -36,10 +36,9 @@
         && FieldExtensions.IsValidFieldValueByKeyHasValue(siteItem, "Display End DateTime"));
     var divSiteAlertCloseClass = siteItem.GetCheckboxCheckedValue("Enable Close")
             ? string.Format(@"{0} d-none", "close-site-alert float-right") : "close-site-alert float-right";
-    var selectedColorItem = FieldExtensions.GetSelectedItemFromDroplistField(siteItem, "Banner Color");
-    var divSiteAlertBgColor = selectedColorItem.GetFieldValue("Phrase").Trim();
+    var divSiteAlertBgColor = siteItem.GetDropdownDictionaryItemValue("Banner Color").Trim();
     var bannerMessage = siteItem.GetFieldValue("Banner Message").GetCleanRitchTextContent();
-    var mediaItem = FieldExtensions.GetImageField(siteItem, "Banner Icon");
+    var mediaItem = siteItem.GetImageFieldItem("Banner Icon");
     var mediaItemUrl = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? MediaManager.GetMediaUrl(mediaItem.MediaItem) : string.Empty;
     var mediaItemAltText = (mediaItem != null && mediaItem.MediaItem.Paths.IsMediaItem) ? mediaItem.Alt : string.Empty;
 }
