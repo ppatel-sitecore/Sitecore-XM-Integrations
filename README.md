@@ -135,9 +135,9 @@
 9. Copy the 'Views\SampleContent' folder as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
     - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\Views => to => [ProjectFolder]\Views
         - Rename the '[ProjectFolder]\Content\SiteNameFolder' folder with the actual name of the Site Item Name, in the Sitecore Content Editor
-10. Copy the 'sitecore-favicon.ico' file as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
-    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\sitecore-favicon.ico => to => [ProjectFolder]
-        - Rename the 'sitecore-favicon.ico' file with following format 'favicon_{sitename}.ico' with the actual name of the Site Item Name, 
-        in the Sitecore Content Editor (i.e. filename should always be in lowercase)
+10. Copy the 'favicon_sitecore.ico' file as is, into your XM/XP project solution (i.e. can only be used even with a Traditional Sitecore XM/XP instance):
+    - e.g .\NugetPackageSolutions\Sitecore.Project.Template.Solution\favicon_sitecore.ico => to => [ProjectFolder]
+        - Add your own fav icon for each site (i.e. capable of multiples sites under the webroot), using the following format 'favicon_{sitename}.ico' 
+        with the actual name of the Site Item Name, in the Sitecore Content Editor (i.e. filename should always be in lowercase)
 
 #### Summary Documention (Pending)

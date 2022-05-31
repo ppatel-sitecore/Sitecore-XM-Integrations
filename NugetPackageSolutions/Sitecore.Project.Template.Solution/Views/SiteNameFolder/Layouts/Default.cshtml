@@ -10,8 +10,7 @@
     var appSettings = siteController.ConfigSettings.AppSettings;
 
     var currentPageItem = Sitecore.Context.Item;
-    appSettings.CanonicalUrl = siteController.ConfigSettings.GetCanonicalUrl(currentPageItem);
-	var favIconPath = string.Format(@"/favicon_{0}.ico", appSettings.SiteNameKey.ToLower().Trim());
+    appSettings.CanonicalUrl = siteController.ConfigSettings.GetDynamicCanonicalUrl(currentPageItem);
 
     var featuresController = new GlobalFeatureComponentsController(appSettings.SiteItem, appSettings.HomeItem);
     ////////////////////UPDATE ROBOTS.TXT SETTINGS ON SITE-ITEM FROM HOME-ITEM////////////////////
@@ -40,7 +39,7 @@
 	    <meta charset="utf-8" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	    <title>@currentPageItem.GetFieldValue("Title")</title>
-	    <link rel="icon" type="image/x-icon" href="@favIconPath" />
+	    <link rel="icon" type="image/x-icon" href="@siteController.ConfigSettings.GetDynamicFavIconUrlPath()" />
 	    <!--Meta Tags partial view -->
 	    @Html.Partial(siteController.ConfigSettings.GetDynamicMetaTagsPartialViewPath(), currentPageItem)
 	    <!--Meta Tags partial view -->

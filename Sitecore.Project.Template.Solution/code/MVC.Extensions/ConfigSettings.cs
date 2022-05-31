@@ -1,7 +1,8 @@
-﻿using Sitecore.Diagnostics;
+﻿using Sitecore.Data;
+using Sitecore.Diagnostics;
 using Sitecore.Foundation.SitecoreExtensions.Extensions;
 using System;
-using Sitecore.Data;
+using System.Net;
 using Item = Sitecore.Data.Items.Item;
 
 namespace Sitecore.Project.Template.Solution.MVC.Extensions
@@ -70,10 +71,43 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 			}
 		}
 
+		/// <summary>Gets the dynamic fav icon URL path.</summary>
+		/// <returns>The Dynamic FavIcon Url path or Default Url path for the current site context</returns>
+		public string GetDynamicFavIconUrlPath()
+		{
+			var favIconUri = $@"https://{Context.Site.TargetHostName}/favicon_{AppSettings.SiteNameKey.ToLower().Trim()}.ico";
+			var favIconUrl = @"/favicon_sitecore.ico";
+			if (GetRequestStatusCode(favIconUri) == HttpStatusCode.NotFound)
+			{
+				favIconUrl = $@"/favicon_{AppSettings.SiteNameKey.ToLower().Trim()}.ico";
+			}
+			return favIconUrl;
+		}
+
+		/// <summary>Gets the request status code.</summary>
+		/// <param name="url">The URL.</param>
+		/// <returns>The HttpStatusCode for Url path</returns>
+		public HttpStatusCode GetRequestStatusCode(string url)
+		{
+			var result = default(HttpStatusCode);
+			var request = WebRequest.Create(url);
+			request.Method = "HEAD";
+			using (var response = request.GetResponse() as HttpWebResponse)
+			{
+				if (response == null)
+				{
+					return result;
+				}
+				result = response.StatusCode;
+				response.Close();
+			}
+			return result;
+		}
+
 		/// <summary>Gets the dynamic canonical URL.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <returns>The Dynamic Canonical Url for the current context page</returns>
-		public string GetCanonicalUrl(Item contextItem)
+		public string GetDynamicCanonicalUrl(Item contextItem)
 		{
 			var currentPageItem = contextItem ?? Context.Item.Database.GetItem($@"{AppSettings.HomeItem.Paths.Path}/500");
 			var canonicalUrl = !string.IsNullOrWhiteSpace(currentPageItem.GetFieldValue("Canonical Url"))

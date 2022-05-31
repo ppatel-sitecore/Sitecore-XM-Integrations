@@ -503,7 +503,7 @@
     <Content Include="Content\CSS\sample-soliris-gmg-pro.css" />
     <Content Include="Scripts\SitecoreIntegrations\sample-soliris-gmg-pro.js" />
     <Content Include="Scripts\SitecoreIntegrations\sitecore_main.js" />
-    <Content Include="sitecore-favicon.ico" />
+    <Content Include="favicon_sitecore.ico" />
     <Content Include="Views\SiteNameFolder\Layouts\Default.cshtml" />
     <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\CarouselMarquee.cshtml" />
     <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\LargeMarquee.cshtml" />
@@ -620,7 +620,7 @@
     <Copy SourceFiles="@(ViewsSiteComponentMarqueeItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems" />
     <Copy SourceFiles="@(ViewsSiteComponentFeatureItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\FeatureItems" />
     <Copy SourceFiles="@(ViewsSiteComponentMediaItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MediaItems" />
-    <Copy SourceFiles="sitecore-favicon.ico" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
+    <Copy SourceFiles="favicon_sitecore.ico" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
     <Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
   </Target>
 </Project>

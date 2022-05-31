@@ -1,7 +1,4 @@
-﻿using Sitecore.Diagnostics;
-using Sitecore.Foundation.SitecoreExtensions.Extensions;
-using Sitecore.Project.Template.Solution.MVC.Extensions;
-using System;
+﻿using Sitecore.Project.Template.Solution.MVC.Extensions;
 using System.Web.Mvc;
 
 namespace Sitecore.Project.Template.Solution
