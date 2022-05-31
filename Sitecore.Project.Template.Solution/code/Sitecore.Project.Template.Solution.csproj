@@ -474,6 +474,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="MVC.Extensions\AppEnvSettingsModel.cs" />
     <Compile Include="MVC.Extensions\ConfigSettings.cs" />
+    <Compile Include="MVC.Extensions\DynamicSiteImplementation.cs" />
     <Compile Include="MVC.Extensions\HelpersExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -497,10 +498,12 @@
     <Content Include="Content\fonts\Roboto-Regular.woff" />
     <Content Include="Content\fonts\Roboto-Thin.ttf" />
     <Content Include="Content\fonts\Roboto-ThinItalic.ttf" />
+    <Content Include="App_Config\Include\Project\DynamicSiteImplementation\Sitecore.Project.DynamicSiteImplementation.config" />
     <None Include="Global.asax" />
     <Content Include="Content\CSS\sample-soliris-gmg-pro.css" />
     <Content Include="Scripts\SitecoreIntegrations\sample-soliris-gmg-pro.js" />
     <Content Include="Scripts\SitecoreIntegrations\sitecore_main.js" />
+    <Content Include="sitecore-favicon.ico" />
     <Content Include="Views\SiteNameFolder\Layouts\Default.cshtml" />
     <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\CarouselMarquee.cshtml" />
     <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\LargeMarquee.cshtml" />
@@ -513,6 +516,11 @@
     <Content Include="Views\SiteNameFolder\Renderings\_Partials\_ModalSpinner.cshtml" />
     <Content Include="Views\SiteNameFolder\Renderings\_Partials\_NotificationBanner.cshtml" />
     <Content Include="Views\SiteNameFolder\Renderings\_Partials\_PageComponents.cshtml" />
+    <Content Include="Views\SiteNameFolder\SiteComponentRenderings\FeatureItems\DownloadItem.cshtml" />
+    <Content Include="Views\SiteNameFolder\SiteComponentRenderings\FeatureItems\CalloutList.cshtml" />
+    <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MediaItems\ImageLayer.cshtml" />
+    <Content Include="Views\SiteNameFolder\SiteComponentRenderings\MediaItems\InformationMediaCollection.cshtml" />
+    <Content Include="Views\SiteNameFolder\SiteComponentRenderings\FeatureItems\InformationCardCollection.cshtml" />
     <None Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -528,9 +536,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Default\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -591,15 +597,19 @@
       <SampleContentFonts Include="Content\SampleContent\fonts\*.*" />
       <SitecoreIntegrations Include="Scripts\SitecoreIntegrations\**\*.*" />
       <AppConfigsProjet Include="App_Config\Include\Project\SiteNameFolder\*.*" />
+      <AppConfigsDynamicSiteImplementation Include="App_Config\Include\Project\DynamicSiteImplementation\*.*" />
       <ViewsLayouts Include="Views\SiteNameFolder\Layouts\*.*" />
       <ViewsRenderings Include="Views\SiteNameFolder\Renderings\*.*" />
       <ViewsRenderingsPartials Include="Views\SiteNameFolder\Renderings\_Partials\*.*" />
       <ViewsSiteComponentRenderings Include="Views\SiteNameFolder\SiteComponentRenderings\*.*" />
       <ViewsSiteComponentMarqueeItems Include="Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems\*.*" />
+      <ViewsSiteComponentFeatureItems Include="Views\SiteNameFolder\SiteComponentRenderings\FeatureItems\*.*" />
+      <ViewsSiteComponentMediaItems Include="Views\SiteNameFolder\SiteComponentRenderings\MediaItems\*.*" />
     </ItemGroup>
     <Message Text="Dev: Building Nuget Package Solution Implementation task" Importance="High" />
     <Copy SourceFiles="bin\$(ProjectName).dll;bin\$(ProjectName).dll.config" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
     <Copy SourceFiles="@(AppConfigsProjet)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Project\SiteNameFolder" />
+    <Copy SourceFiles="@(AppConfigsDynamicSiteImplementation)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\App_Config\Include\Project\DynamicSiteImplementation" />
     <Copy SourceFiles="@(SampleContentCSS)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\CSS" />
     <Copy SourceFiles="@(SampleContentFonts)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Content\SampleContent\fonts" />
     <Copy SourceFiles="@(SitecoreIntegrations)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Scripts\SitecoreIntegrations" />
@@ -608,6 +618,9 @@
     <Copy SourceFiles="@(ViewsRenderingsPartials)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\Renderings\_Partials" />
     <Copy SourceFiles="@(ViewsSiteComponentRenderings)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings" />
     <Copy SourceFiles="@(ViewsSiteComponentMarqueeItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MarqueeItems" />
+    <Copy SourceFiles="@(ViewsSiteComponentFeatureItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\FeatureItems" />
+    <Copy SourceFiles="@(ViewsSiteComponentMediaItems)" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)\Views\SiteNameFolder\SiteComponentRenderings\MediaItems" />
+    <Copy SourceFiles="sitecore-favicon.ico" DestinationFolder="..\..\NugetPackageSolutions\$(ProjectName)" />
     <Message Text="Dev: Building Nuget Package Solution Implementation files" Importance="High" />
   </Target>
 </Project>

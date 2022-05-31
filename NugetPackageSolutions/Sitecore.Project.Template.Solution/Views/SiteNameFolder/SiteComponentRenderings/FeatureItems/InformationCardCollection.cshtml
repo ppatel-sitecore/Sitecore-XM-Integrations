@@ -1,0 +1,52 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentComponentItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var infoCardCollection = featuresController.GetInfoCardCollectionItem(currentComponentItem.ID);
+}
+<!-- Information Card Collection -->
+<div class="section-container section-info-cards pt-56 pb-4 mb-2">
+    @if (!string.IsNullOrEmpty(infoCardCollection.Headline))
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-12 mb-4 text-center">
+                <p>
+                    @infoCardCollection.Headline.RenderHtmlString()
+                </p>
+            </div>
+        </div>
+    }
+    @if (infoCardCollection.InfoCards.Count > 0)
+    {
+        <div class="row justify-content-center mx-3">
+            @foreach (var card in infoCardCollection.InfoCards)
+            {
+                if (!string.IsNullOrEmpty(card.IconImageUrl))
+                {
+                    var linkUrl = (!string.IsNullOrEmpty(card.IconImageLinkUrl)) ? card.IconImageLinkUrl : "#";
+                    var linkUrlCSS = (linkUrl == "#") ? "disabled" : string.Empty;
+                    <!-- Info Card Item -->
+                    <div class="col-md-1 col-4 mx-md-3 px-0 mb-33 mb-md-0 text-center">
+                        <a href="@linkUrl" class="@linkUrlCSS" aria-label="@card.IconImageLinkText">
+                            <img alt="@card.IconImageLinkText" height="56" width="56" src="@card.IconImageUrl" />
+                            <br />
+                            <p class="mt-2 black">@card.IconImageLinkText.RenderHtmlString()</p>
+                        </a>
+                    </div>
+                    <!-- Info Card Item -->
+                }
+            }
+        </div>
+    }
+</div>
+<!-- End Information Card Collection -->

@@ -24,20 +24,36 @@
 	    if (contextItem != null)
 	    {
 		    var contextItemId = contextItem.ID.ToString().RemoveSpecifiedChars(@"[{}]", true);
-            <section id="components-@contextItemId" class="container-fluid section-container p-0">
-                @if (contextItem.TemplateName.Equals("Large Marquee", StringComparison.OrdinalIgnoreCase))
-                {
-                    @Html.Partial(siteController.ConfigSettings.GetLargeMarqueeViewPath(), contextItem)
-                }
-                else if (contextItem.TemplateName.Equals("Medium Marquee", StringComparison.OrdinalIgnoreCase))
-                {
-                    @Html.Partial(siteController.ConfigSettings.GetMediumMarqueeViewPath(), contextItem)
-                }
-                else if (contextItem.TemplateName.Equals("Small Marquee", StringComparison.OrdinalIgnoreCase))
-                {
-                    @Html.Partial(siteController.ConfigSettings.GetSmallMarqueeViewPath(), contextItem)
-                }
-            </section>
+			<section id="components-@contextItemId" class="container-fluid section-container p-0">
+			    @if (contextItem.TemplateName.Equals("Large Marquee", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicLargeMarqueeViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Medium Marquee", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicMediumMarqueeViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Small Marquee", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicSmallMarqueeViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Information Card Collection", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicInformationCardCollectionViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Information Media Collection", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicInformationMediaCollectionViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Callout List", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicCalloutListViewPath(), contextItem)
+			    }
+			    else if (contextItem.TemplateName.Equals("Image Layer", StringComparison.OrdinalIgnoreCase))
+			    {
+			        @Html.Partial(siteController.ConfigSettings.GetDynamicImageLayerViewPath(), contextItem)
+			    }
+			</section>
         }
     }
 }

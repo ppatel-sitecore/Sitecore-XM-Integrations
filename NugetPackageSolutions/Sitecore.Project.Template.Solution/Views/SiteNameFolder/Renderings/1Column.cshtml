@@ -28,7 +28,7 @@
         <section id="page-caroursel-@currentPageItem.ID.ToString()" class="container-fluid section-container p-0">
             @if (carouselItems != null && carouselItems.Length > 0)
             {
-                @Html.Partial(siteController.ConfigSettings.GetCarouselMarqueeViewPath(), currentPageItem)
+                @Html.Partial(siteController.ConfigSettings.GetDynamicCarouselMarqueeViewPath(), currentPageItem)
             }
         </section>
         <!-- Dynamic CarouselMarquee Partial View -->
@@ -37,7 +37,7 @@
     {
         if (enableComponentContent)
         {
-            @Html.Partial(siteController.ConfigSettings.GetPageComponentsPartialViewPath(), currentPageItem)
+            @Html.Partial(siteController.ConfigSettings.GetDynamicPageComponentsPartialViewPath(), currentPageItem)
         }
         <div class="container-fluid section-container p-0">
             @if (!string.IsNullOrEmpty(bodyContent.GetCleanRitchTextContent()))

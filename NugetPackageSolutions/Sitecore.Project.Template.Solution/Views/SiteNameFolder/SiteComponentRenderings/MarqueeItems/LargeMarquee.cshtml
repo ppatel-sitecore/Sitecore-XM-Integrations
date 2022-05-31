@@ -19,7 +19,7 @@
 <!-- Dynamic Large Marquee Component Partial View -->
 @if (contextItem.TemplateName.Contains("Marquee"))
 {
-    if (marqueeItem != null && (!string.IsNullOrEmpty(marqueeItem.Description)))
+    if (!string.IsNullOrEmpty(marqueeItem.Description))
     {
         <div class="section-marquee marquee-large @marqueeBgColorCss">
             <div id="marquee-item-@contextItem.ID.ToString()">

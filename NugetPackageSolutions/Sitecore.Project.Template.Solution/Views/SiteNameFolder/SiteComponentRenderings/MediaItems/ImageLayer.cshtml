@@ -1,0 +1,22 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Foundation.SitecoreExtensions.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentPageItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var enableCarouselGallery = currentPageItem.TemplateID == homeItem.TemplateID
+                                && currentPageItem.GetCheckboxCheckedValue("Enable Carousel Gallery");
+    var carouselItems = currentPageItem.GetMultiListValueItems("Carousel Gallery Items");
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var imageLayerItem = featuresController.GetImageLayerItem(currentPageItem.ID);
+}
+
+<!-- Image Layer View -->
+<!-- Image Layer View -->

@@ -11,6 +11,7 @@
 
     var currentPageItem = Sitecore.Context.Item;
     appSettings.CanonicalUrl = siteController.ConfigSettings.GetCanonicalUrl(currentPageItem);
+	var favIconPath = string.Format(@"/favicon_{0}.ico", appSettings.SiteNameKey.ToLower().Trim());
 
     var featuresController = new GlobalFeatureComponentsController(appSettings.SiteItem, appSettings.HomeItem);
     ////////////////////UPDATE ROBOTS.TXT SETTINGS ON SITE-ITEM FROM HOME-ITEM////////////////////
@@ -39,9 +40,9 @@
 	    <meta charset="utf-8" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	    <title>@currentPageItem.GetFieldValue("Title")</title>
-	    <link rel="icon" type="image/x-icon" href="/favicon_solirigmgpro.ico" />
+	    <link rel="icon" type="image/x-icon" href="@favIconPath" />
 	    <!--Meta Tags partial view -->
-	    @Html.Partial(siteController.ConfigSettings.GetMetatagsPartialViewPath(), currentPageItem)
+	    @Html.Partial(siteController.ConfigSettings.GetDynamicMetaTagsPartialViewPath(), currentPageItem)
 	    <!--Meta Tags partial view -->
 	    <link rel="canonical" href="@appSettings.CanonicalUrl" />
 
@@ -82,15 +83,15 @@
 	    <!-- END Google Tag Manager (noscript) -->
 	    <div id="printable-area"></div>
 	    <!--Header partial view -->
-	    @Html.Partial(siteController.ConfigSettings.GetHeaderPartialViewPath(), appSettings.SiteItem)
+	    @Html.Partial(siteController.ConfigSettings.GetDynamicHeaderPartialViewPath(), appSettings.SiteItem)
 	    <!--Header partial view -->
 	    <!--Dynamic main content partial view container -->
 	    <main id="main" role="main" class="main__content">
-	        @Html.Partial(siteController.ConfigSettings.GetMainPartialViewPath(), currentPageItem)
+	        @Html.Partial(siteController.ConfigSettings.GetDynamicMainPartialViewPath(), currentPageItem)
 	    </main>
 	    <!--Dynamic main content partial view container -->
 	    <!--Footer partial view -->
-	    @Html.Partial(siteController.ConfigSettings.GetFooterPartialViewPath(), appSettings.SiteItem)
+	    @Html.Partial(siteController.ConfigSettings.GetDynamicFooterPartialViewPath(), appSettings.SiteItem)
 	    <!--Footer partial view -->
 	    <!-- Base Minified Custom Site JavaScript -->
 	    @if (!string.IsNullOrWhiteSpace(appSettings.SiteItem.GetFieldValue("Custom JavaScript Location")))
@@ -104,7 +105,7 @@
 	    <!-- Base Minified Custom Site JavaScript -->
 	    @if (appSettings.EnableBrandedModalSpinner)
 	    {
-	        @Html.Partial(siteController.ConfigSettings.GetModalSpinnerPartialViewPath())
+	        @Html.Partial(siteController.ConfigSettings.GetDynamicModalSpinnerPartialViewPath())
 	    }
 	    <!-- Google Tag Manager Script -->
 	    <script type="text/javascript" id="" src="https://www.googletagmanager.com/gtag/js?id=DC-10800042"></script>

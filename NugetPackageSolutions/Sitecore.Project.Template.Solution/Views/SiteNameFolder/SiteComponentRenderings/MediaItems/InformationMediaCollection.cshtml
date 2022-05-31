@@ -1,0 +1,60 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentPageItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var collection = featuresController.GetInformationMediaCollection(currentPageItem.ID);
+}
+
+<!-- Information Media Collection View -->
+<div class="information-media-collection">
+    <div class="section-container mt-5 mb-40">
+        @if (!string.IsNullOrEmpty(collection.Headline))
+        {
+            <div class="row mx-0 justify-content-center">
+                <div class="col-12 text-center">
+                    <h2>@collection.Headline.RenderHtmlString()</h2>
+                </div>
+            </div>
+        }
+        @if (collection.MediaItems.Count > 0)
+        {
+            <div class="row mx-0 justify-content-center">
+
+                <!-- Begin Media Items -->
+                @foreach (var cardItem in collection.MediaItems)
+                {
+                    <div class="case-studies-container">
+                        @if (!string.IsNullOrEmpty(cardItem.ImageURL))
+                        {
+                            <img class="play-video-modal" alt="@cardItem.MediaItemAltText" height="212" width="360" data-video="@cardItem.Title.GetCleanRitchTextContent()" src="@cardItem.ImageURL?h=252&w=434" />
+                        }
+                        <div class="caption">
+                            <p class="large text-left">
+                                <strong> @cardItem.Title</strong><span class="pl-2 text-muted">(@cardItem.Runtime)</span>
+                            </p>
+                            <p class="large pt-2 text-left"> @cardItem.SubTitle</p>
+                        </div>
+                    </div>
+                }
+                <!-- Begin Media Items -->
+            </div>
+
+        }
+
+    </div>
+</div>
+@if (!string.IsNullOrEmpty(collection.ReferencesBlockContent))
+{
+    @collection.ReferencesBlockContent.RenderHtmlString()
+}
+<!-- Information Media Collection View -->

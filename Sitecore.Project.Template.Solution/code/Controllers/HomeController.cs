@@ -1,4 +1,7 @@
-﻿using Sitecore.Project.Template.Solution.MVC.Extensions;
+﻿using Sitecore.Diagnostics;
+using Sitecore.Foundation.SitecoreExtensions.Extensions;
+using Sitecore.Project.Template.Solution.MVC.Extensions;
+using System;
 using System.Web.Mvc;
 
 namespace Sitecore.Project.Template.Solution
@@ -17,7 +20,7 @@ namespace Sitecore.Project.Template.Solution
 		}
 
 		/// <summary>Gets the index.</summary>
-		/// <returns></returns>
+		/// <returns>To Default View</returns>
 		public ActionResult Index()
 		{
 			//Clear/Abandon Server Session

@@ -1,0 +1,54 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Project.Template.Solution.MVC.Extensions;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentComponentItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var calloutListItem = featuresController.GetCalloutListItem(currentComponentItem.ID);
+}
+<!-- CalloutList Collection -->
+<div class="container-fluid callout-cta-containter @calloutListItem.BodyRowColorCSS">
+    <div class="section-container">
+        @if (!string.IsNullOrEmpty(calloutListItem.Title.GetCleanRitchTextContent()))
+        {
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <h4>@calloutListItem.Title.RenderHtmlString()</h4>
+                </div>
+            </div>
+            calloutListItem.BodyContent.RenderHtmlString();
+        }
+        <div class="card-container">
+            @foreach (var ctaCardItem in calloutListItem.CTACardItems)
+            {
+                <div class="card">
+                    <div class="card-body text-dark footer-card-text text-center">
+                        @ctaCardItem.CTASubHeadline.RenderHtmlString()
+
+                        @if ((!string.IsNullOrEmpty(ctaCardItem.LinkText)) && (!string.IsNullOrEmpty(ctaCardItem.LinkUrl)))
+                        {
+                            if (!string.IsNullOrEmpty(ctaCardItem.CTALinkModalAttributes))
+                            {
+                                <a href="#" class="btn btn-primary mt-3 @ctaCardItem.CTAStyledClasses" @ctaCardItem.CTALinkModalAttributes>@ctaCardItem.LinkText</a>
+                            }
+                            else
+                            {
+                                <a href="@ctaCardItem.LinkUrl" class="btn btn-primary mt-3 @ctaCardItem.CTAStyledClasses" @ctaCardItem.CTALinkModalAttributes>@ctaCardItem.LinkText</a>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+<!-- CalloutList Collection -->

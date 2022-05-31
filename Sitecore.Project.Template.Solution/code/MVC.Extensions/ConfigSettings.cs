@@ -29,8 +29,7 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 				return _instance;
 			}
 		}
-
-
+		
 		/// <summary>Prevents a default instance of the <see cref="ConfigSettings" /> class from being created.</summary>
 		private ConfigSettings()
 		{
@@ -47,14 +46,23 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 		{
 			try
 			{
-				AppSettings = new AppEnvSettingsModel();
-				AppSettings.RootContentItem = rootContentItem;
-				AppSettings.SiteNameKey = siteNameKey;
-				AppSettings.SiteItem = Context.Item.Database.GetItem($@"{rootContentItem.Paths.Path}/{siteNameKey}");
+				AppSettings = new AppEnvSettingsModel
+				{
+					MasterDBTarget = Configuration.Factory.GetDatabase(Configuration.Settings.GetSetting("MasterDBKey")),
+					DynamicLayoutItem = Context.Item.Database.GetItem(new ID(Configuration.Settings
+						.GetSetting("DynamicLayoutItemId"))),
+					DynamicLayoutFieldContentId = ID.Parse(Configuration.Settings
+						.GetSetting("DynamicLayoutFieldContentId")),
+					RootContentItem = rootContentItem,
+					SiteNameKey = siteNameKey,
+					SiteItem = Context.Item.Database.GetItem($@"{rootContentItem.Paths.Path}/{siteNameKey}"),
+					EnableBrandedModalSpinner = Configuration.Settings.GetBoolSetting($@"{siteNameKey}EnableBrandedModalSpinner", false),
+					BrandedModalSpinnerSVG = Configuration.Settings.GetBoolSetting($@"{siteNameKey}BrandedModalSpinnerSVG", false)
+				};
+				AppSettings.DynamicLayoutCshtmlPath = GetDynamicLayoutCshtmlPath(AppSettings.DynamicLayoutItem,
+					AppSettings.DynamicLayoutFieldContentId);
 				AppSettings.HomeItem = Context.Item.Database.GetItem($@"{AppSettings.SiteItem.Paths.Path}/Home");
 				AppSettings.GlobalItem = Context.Item.Database.GetItem($@"{AppSettings.SiteItem.Paths.Path}/Global");
-				AppSettings.EnableBrandedModalSpinner = Configuration.Settings.GetBoolSetting($@"{siteNameKey}EnableBrandedModalSpinner", false);
-				AppSettings.BrandedModalSpinnerSVG = Configuration.Settings.GetBoolSetting($@"{siteNameKey}BrandedModalSpinnerSVG", false);
 			}
 			catch (Exception ex)
 			{
@@ -62,7 +70,7 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 			}
 		}
 
-		/// <summary>Gets the canonical URL.</summary>
+		/// <summary>Gets the dynamic canonical URL.</summary>
 		/// <param name="contextItem">The context item.</param>
 		/// <returns>The Dynamic Canonical Url for the current context page</returns>
 		public string GetCanonicalUrl(Item contextItem)
@@ -74,55 +82,55 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 			return canonicalUrl;
 		}
 
-		/// <summary>Gets the metatags partial view path.</summary>
-		/// <returns>The Dynamic MetatagsPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetMetatagsPartialViewPath()
+		/// <summary>Gets the dynamic meta tags partial view path.</summary>
+		/// <returns>The DynamicMetaTagsPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicMetaTagsPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}MetatagsPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicMetaTagsPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the header partial view path.</summary>
-		/// <returns>The Dynamic HeaderPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetHeaderPartialViewPath()
+		/// <summary>Gets the dynamic header partial view path.</summary>
+		/// <returns>The DynamicHeaderPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicHeaderPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}HeaderPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicHeaderPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the main partial view path.</summary>
-		/// <returns>The Dynamic MainPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetMainPartialViewPath()
+		/// <summary>Gets the dynamic main partial view path.</summary>
+		/// <returns>The DynamicMainPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicMainPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}MainPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicMainPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the footer partial view path.</summary>
-		/// <returns>The Dynamic FooterPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetFooterPartialViewPath()
+		/// <summary>Gets the dynamic footer partial view path.</summary>
+		/// <returns>The DynamicFooterPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicFooterPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}FooterPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicFooterPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the modal spinner partial view path.</summary>
-		/// <returns>The Dynamic ModalSpinnerPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetModalSpinnerPartialViewPath()
+		/// <summary>Gets the dynamic modal spinner partial view path.</summary>
+		/// <returns>The DynamicModalSpinnerPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicModalSpinnerPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}ModalSpinnerPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicModalSpinnerPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the branded modal spinner path.</summary>
-		/// <returns>The Dynamic BrandedModalSpinnerPath from the Sitecore project settings for this site</returns>
-		public string GetBrandedModalSpinnerPath()
+		/// <summary>Gets the dynamic branded modal spinner path.</summary>
+		/// <returns>The DynamicBrandedModalSpinnerPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicBrandedModalSpinnerPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}BrandedModalSpinnerPath")
+			return Configuration.Settings.GetSetting(@"DynamicBrandedModalSpinnerPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Ges the nav category template identifier.</summary>
+		/// <summary>Ges the dynamic nav category template identifier.</summary>
 		/// <returns>The Dynamic NavCategoryTemplateId from the Sitecore project settings for this site</returns>
 		public ID GetNavCategoryTemplateId()
 		{
@@ -130,61 +138,111 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 			return Context.Item.Database.GetItem(path).ID;
 		}
 
-		/// <summary>Gets the page type template identifier.</summary>
+		/// <summary>Gets the dynamic page type template identifier.</summary>
 		/// <returns>The Dynamic PageTypeTemplateId from the Sitecore project settings for this site</returns>
 		public ID GetPageTypeTemplateId()
 		{
-			var path = Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}PageTypesTemplatePath"
+			var path = Configuration.Settings.GetSetting(@"DynamicPageTypesTemplatePath"
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey));
 			return Context.Item.Database.GetItem(path).ID;
 		}
 
-		/// <summary>Gets the notification banner partial view path.</summary>
-		/// <returns>The Dynamic NotificationBannerPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetNotificationBannerPartialViewPath()
+		/// <summary>Gets the dynamic notification banner partial view path.</summary>
+		/// <returns>The DynamicNotificationBannerPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicNotificationBannerPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}NotificationBannerPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicNotificationBannerPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the carousel marquee view path.</summary>
-		/// <returns>The Dynamic CarouselMarqueeViewPath from the Sitecore project settings for this site</returns>
-		public string GetCarouselMarqueeViewPath()
+		/// <summary>Gets the dynamic carousel marquee view path.</summary>
+		/// <returns>The DynamicCarouselMarqueeViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicCarouselMarqueeViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}CarouselMarqueeViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicCarouselMarqueeViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the large marquee view path.</summary>
-		/// <returns>The Dynamic LargeMarqueeViewPath from the Sitecore project settings for this site</returns>
-		public string GetLargeMarqueeViewPath()
+		/// <summary>Gets the dynamic large marquee view path.</summary>
+		/// <returns>The DynamicLargeMarqueeViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicLargeMarqueeViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}LargeMarqueeViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicLargeMarqueeViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the medium marquee view path.</summary>
-		/// <returns>The Dynamic MediumMarqueeViewPath from the Sitecore project settings for this site</returns>
-		public string GetMediumMarqueeViewPath()
+		/// <summary>Gets the dynamic medium marquee view path.</summary>
+		/// <returns>The DynamicMediumMarqueeViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicMediumMarqueeViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}MediumMarqueeViewPath")
+			return Configuration.Settings.GetSetting($@"DynamicMediumMarqueeViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the small marquee view path.</summary>
-		/// <returns>The Dynamic SmallMarqueeViewPath from the Sitecore project settings for this site</returns>
-		public string GetSmallMarqueeViewPath()
+		/// <summary>Gets the dynamic small marquee view path.</summary>
+		/// <returns>The DynamicSmallMarqueeViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicSmallMarqueeViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}SmallMarqueeViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicSmallMarqueeViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
 		}
 
-		/// <summary>Gets the page components partial view path.</summary>
-		/// <returns>The Dynamic PageComponentsPartialViewPath from the Sitecore project settings for this site</returns>
-		public string GetPageComponentsPartialViewPath()
+		/// <summary>Gets the dynamic page components partial view path.</summary>
+		/// <returns>The DynamicPageComponentsPartialViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicPageComponentsPartialViewPath()
 		{
-			return Configuration.Settings.GetSetting($@"{AppSettings.SiteNameKey}PageComponentsPartialViewPath")
+			return Configuration.Settings.GetSetting(@"DynamicPageComponentsPartialViewPath")
 				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic callout ListView path.</summary>
+		/// <returns>The Dynamic DynamicCalloutListViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicCalloutListViewPath()
+		{
+			return Configuration.Settings.GetSetting(@"DynamicCalloutListViewPath")
+				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic download item view path.</summary>
+		/// <returns>The Dynamic DynamicDownloadItemViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicDownloadItemViewPath()
+		{
+			return Configuration.Settings.GetSetting(@"DynamicDynamicDownloadItemView")
+				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic information card collection view path.</summary>
+		/// <returns>The Dynamic DynamicInformationCardCollectionViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicInformationCardCollectionViewPath()
+		{
+			return Configuration.Settings.GetSetting(@"DynamicInformationCardCollectionViewPath")
+				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic information media collection view path.</summary>
+		/// <returns>The Dynamic DynamicInformationMediaCollectionViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicInformationMediaCollectionViewPath()
+		{
+			return Configuration.Settings.GetSetting(@"DynamicInformationMediaCollectionViewPath")
+				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic image layer view path.</summary>
+		/// <returns>The Dynamic DynamicImageLayerViewPath from the Sitecore project settings for this site</returns>
+		public string GetDynamicImageLayerViewPath()
+		{
+			return Configuration.Settings.GetSetting(@"DynamicImageLayerViewPath")
+				.Replace("SiteNameFolder", AppSettings.SiteNameKey);
+		}
+
+		/// <summary>Gets the dynamic layout CSHTML path.</summary>
+		/// <returns>The Dynamic Layout Cshtml path</returns>
+		private string GetDynamicLayoutCshtmlPath(Item contextItem, ID fieldId)
+		{
+			var path = FieldExtensions.IsValidFieldValueByKeyHasValue(contextItem, fieldId)
+				? contextItem.GetFieldValue(fieldId)
+				: Configuration.Settings.GetSetting("DynamicLayoutFallbackCshtmlPath");
+			return path;
 		}
 	}
 }

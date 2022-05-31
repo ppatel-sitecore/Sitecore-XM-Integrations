@@ -9,7 +9,7 @@
     var mediaItemAltText = string.Empty;
     if (appSettings.BrandedModalSpinnerSVG)
     {
-        var mediaItem = Sitecore.Context.Database.GetItem(siteController.ConfigSettings.GetBrandedModalSpinnerPath());
+        var mediaItem = Sitecore.Context.Database.GetItem(siteController.ConfigSettings.GetDynamicBrandedModalSpinnerPath());
         mediaItemUrl = (mediaItem != null && mediaItem.Paths.IsMediaItem)
             ? MediaManager.GetMediaUrl(mediaItem) : string.Empty;
         mediaItemAltText = (mediaItem != null && mediaItem.Paths.IsMediaItem)

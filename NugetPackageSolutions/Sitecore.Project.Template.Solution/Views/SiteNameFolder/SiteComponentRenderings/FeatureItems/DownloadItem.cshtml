@@ -1,0 +1,19 @@
+﻿@using Sitecore.Data.Items;
+@using Sitecore.Project.Template.Solution;
+@using Sitecore.Feature.GlobalComponentLibrary.Controllers;
+@model Item
+
+@{
+    var currentComponentItem = Model;
+    var siteController = new HomeController();
+    var appSettings = siteController.ConfigSettings.AppSettings;
+
+    var siteItem = appSettings.SiteItem;
+    var homeItem = appSettings.HomeItem;
+    var featuresController = new GlobalFeatureComponentsController(siteItem, homeItem);
+    var downloadItem = featuresController.GetDownloadItem(currentComponentItem.ID);
+}
+
+<img src="@downloadItem.ImageUrl" alt="@downloadItem.ImageAltText" />
+<h2>@downloadItem.DownloadButtonText</h2>
+<a href="@downloadItem.DownloadAssetUrl" aria-label="@downloadItem.DownloadButtonText">@downloadItem.DownloadButtonText</a>
