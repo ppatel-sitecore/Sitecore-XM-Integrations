@@ -101,7 +101,7 @@ namespace Sitecore.Project.Template.Solution.MVC.Extensions
 					}
 
 					// Setup publishing options based on your need
-					contextItem.PublishItem(PublishMode.Smart, targetDatabase.ConnectionStringName,false, true);
+					contextItem.PublishItem(PublishMode.Smart, targetDatabase.ConnectionStringName, false, true);
 				}
 			}
 			catch (Exception ex)
